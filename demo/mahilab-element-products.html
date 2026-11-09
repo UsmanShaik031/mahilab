@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f9f4ff" />
+  <link rel="icon" type="image/png" href="./assets/logos/mahilab.png" />
+  <title>The Mahi Lab | Interactive Tech Magazine</title>
+  <meta
+    name="description"
+    content="Explore The Mahi Lab's interactive 3D magazine. Learn Linux, DevOps, Cloud, Full Stack, AI, coding, and discover freelancing services."
+  />
+</head>
+<body>
+  <!-- Website header: unchanged navigation and magazine page numbers -->
+  <header id="home">
+    <a class="brand" href="#home" data-target-page="0" aria-label="The Mahi Lab - Back to home">
+      <img src="./assets/logos/mahilab.png" alt="The Mahi Lab logo" />
+      <div class="brand-copy">
+        <strong class="brand-name">Mahi Lab</strong>
+        <small class="brand-hint">Select an option to view its page</small>
+      </div>
+    </a>
+
+    <nav aria-label="The Mahi Lab magazine sections">
+      <a href="#home" data-target-page="0" aria-current="page">Home</a>
+      <a href="#topics" data-target-page="3">Topics</a>
+      <a href="#services" data-target-page="4">Freelancing Services</a>
+      <a href="#learning" data-target-page="2">How to Learn</a>
+      <a href="#cloud" data-target-page="8">Cloud &amp; Tools</a>
+      <a href="#posts" data-target-page="1">Latest Posts</a>
+      <a href="#follow" data-target-page="11">Follow Us</a>
+    </nav>
+  </header>
+
+  <!-- Existing LeafThrough magazine; IDs and engine structure preserved -->
+  <div class="workspace">
+    <main class="stage" id="stage" aria-label="The Mahi Lab interactive magazine">
+      <div class="reader-mount" id="reader-mount"></div>
+    </main>
+    <aside class="panel" id="panel" aria-label="Reader settings"></aside>
+  </div>
+
+  <!-- NEW: products appear after the book, before the footer -->
+  <section class="mahi-products" id="products" aria-labelledby="products-title">
+    <div class="mahi-products-inner">
+      <div class="products-heading">
+        <span class="products-eyebrow">MADE BY THE MAHI LAB</span>
+        <h2 id="products-title">Our Products</h2>
+        <p>Simple, useful tools built for students and professionals.</p>
+      </div>
+
+      <div class="products-grid">
+        <article class="product-card product-card-ginger">
+          <div class="product-logo product-logo-ginger">
+            <!-- If no logo file is present, the G monogram stays visible. -->
+            <span class="product-monogram" aria-hidden="true">G</span>
+            <img
+              src="./assets/logos/gingerdrafts.png"
+              alt="Ginger Drafts logo"
+              loading="lazy"
+              onerror="this.hidden=true"
+            />
+          </div>
+          <div class="product-content">
+            <h3>Ginger Drafts</h3>
+            <p>Build a professional, ATS-friendly resume with free templates.</p>
+            <span class="product-type">Resume Builder</span>
+          </div>
+        </article>
+
+        <article class="product-card product-card-askbun">
+          <div class="product-logo product-logo-askbun">
+            <!-- If no logo file is present, the A monogram stays visible. -->
+            <span class="product-monogram" aria-hidden="true">A</span>
+            <img
+              src="./assets/logos/askbun.png"
+              alt="Ask Bun logo"
+              loading="lazy"
+              onerror="this.hidden=true"
+            />
+          </div>
+          <div class="product-content">
+            <h3>Ask Bun</h3>
+            <p>Explore programming questions and answers for learning and interviews.</p>
+            <span class="product-type">Learning &amp; Interview Prep</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer kept completely outside the reader and products grid -->
+  <footer class="mahi-footer">
+    <div class="mahi-footer-inner">
+      <div class="mahi-footer-brand">
+        <img src="./assets/logos/mahilab.png" alt="The Mahi Lab logo" />
+        <div>
+          <h3>The Mahi Lab</h3>
+          <p>Technology Made Simple.</p>
+        </div>
+      </div>
+
+      <p class="mahi-footer-description">
+        Learn. Build. Grow.
+        <span>Telugu Tech Tutorials &amp; Freelancing Services.</span>
+      </p>
+
+      <div class="mahi-footer-links">
+        <a href="https://www.instagram.com/themahilab.in/" target="_blank" rel="noopener noreferrer">
+          Instagram ↗
+        </a>
+        <a href="#home">Back to Top ↑</a>
+      </div>
+    </div>
+
+    <div class="mahi-footer-bottom">
+      <span>© 2026 The Mahi Lab. All rights reserved.</span>
+      <span>Built by Usman Shaik</span>
+    </div>
+  </footer>
+
+  <!-- The original LeafThrough TypeScript entrypoint stays untouched -->
+  <script type="module" src="./main-element.ts"></script>
+</body>
+</html>

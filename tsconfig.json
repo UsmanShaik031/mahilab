@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "types": [
+      "vite/client",
+      "node"
+    ],
+    "noEmit": true,
+    "paths": {
+      "leafthrough": [
+        "./src/index.ts"
+      ],
+      "leafthrough/element": [
+        "./src/element.ts"
+      ],
+      "leafthrough/react": [
+        "./src/react.tsx"
+      ],
+      "leafthrough/vue": [
+        "./src/vue.ts"
+      ],
+      "leafthrough/svelte": [
+        "./src/svelte.ts"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "demo",
+    "test",
+    "vitest.config.ts",
+    "vite.config.ts",
+    "tsup.config.ts"
+  ]
+}

@@ -1,0 +1,972 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+
+  <meta
+    name="theme-color"
+    content="#f9f4ff"
+  />
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="./assets/logos/mahilab.png"
+  />
+
+  <title>The Mahi Lab | Interactive Tech Magazine</title>
+
+  <meta
+    name="description"
+    content="Explore The Mahi Lab's interactive 3D magazine. Learn Linux, DevOps, Cloud, Full Stack, AI, coding, and discover freelancing services."
+  />
+
+  <!-- ==========================================
+       ADDITIONAL PAGE STYLES
+       Existing style.css remains unchanged
+       ========================================== -->
+
+  <style>
+
+    /* ==========================================
+       MAGAZINE POSITION ADJUSTMENT
+       ========================================== */
+
+    @media (max-width: 900px) {
+
+      .stage {
+        padding-top:
+          calc(var(--header-height) + 4px) !important;
+      }
+
+      .stage-nav {
+        margin-top: 8px !important;
+      }
+
+    }
+
+    /* ==========================================
+       OUR PRODUCTS SECTION
+       ========================================== */
+
+    .mahi-products {
+      position: relative;
+      z-index: 2;
+
+      width: 100%;
+
+      padding: 56px 20px 70px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.80),
+          rgba(244, 235, 255, 0.65)
+        );
+    }
+
+    .mahi-products-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ==========================================
+       PRODUCTS HEADING
+       ========================================== */
+
+    .mahi-products-heading {
+      text-align: center;
+      margin-bottom: 34px;
+    }
+
+    .mahi-products h2 {
+      margin: 0 0 10px;
+
+      color: #211c2b;
+
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 750;
+      line-height: 1.2;
+    }
+
+    .mahi-products-intro {
+      margin: 0;
+
+      color: #6c607d;
+
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    /* ==========================================
+       PRODUCTS GRID
+       ========================================== */
+
+    .mahi-product-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 22px;
+
+      width: 100%;
+    }
+
+    /* ==========================================
+       PRODUCT CARD
+       ========================================== */
+
+    .mahi-product-card {
+      display: flex;
+      align-items: center;
+
+      gap: 20px;
+
+      min-width: 0;
+      padding: 26px;
+
+      background: #ffffff;
+
+      border: 1px solid #e5d9f5;
+      border-radius: 20px;
+
+      box-shadow:
+        0 12px 32px rgba(93, 59, 150, 0.07);
+
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+    }
+
+    .mahi-product-card:hover {
+      transform: translateY(-5px);
+
+      border-color: #bfa7ee;
+
+      box-shadow:
+        0 18px 42px rgba(93, 59, 150, 0.12);
+    }
+
+    /* ==========================================
+       PRODUCT LOGOS
+       ========================================== */
+
+    .mahi-product-logo {
+      width: 72px;
+      height: 72px;
+
+      flex-shrink: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 17px;
+
+      object-fit: contain;
+    }
+
+    .mahi-product-logo-fallback {
+      background: #eee5ff;
+
+      color: #7147bd;
+
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .mahi-product-logo-fallback.askbun {
+      background: #080808;
+      color: #ffffff;
+    }
+
+    /* ==========================================
+       PRODUCT CONTENT
+       ========================================== */
+
+    .mahi-product-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .mahi-product-card h3 {
+      margin: 0 0 7px;
+
+      color: #211c2b;
+
+      font-size: 21px;
+      font-weight: 750;
+      line-height: 1.3;
+    }
+
+    .mahi-product-card p {
+      margin: 0;
+
+      color: #6c607d;
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* ==========================================
+       TABLET RESPONSIVE
+       ========================================== */
+
+    @media (max-width: 900px) {
+
+      .mahi-products {
+        padding: 45px 20px 60px;
+      }
+
+      .mahi-product-grid {
+        gap: 16px;
+      }
+
+      .mahi-product-card {
+        gap: 14px;
+        padding: 20px;
+      }
+
+      .mahi-product-logo {
+        width: 60px;
+        height: 60px;
+      }
+
+      .mahi-product-card h3 {
+        font-size: 18px;
+      }
+
+    }
+
+    /* ==========================================
+       MOBILE RESPONSIVE
+       ========================================== */
+
+    @media (max-width: 600px) {
+
+      .mahi-products {
+        padding: 36px 16px 52px;
+      }
+
+      .mahi-products-heading {
+        margin-bottom: 25px;
+      }
+
+      .mahi-products h2 {
+        font-size: 27px;
+      }
+
+      .mahi-products-intro {
+        font-size: 12px;
+      }
+
+      .mahi-product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .mahi-product-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px;
+        gap: 10px;
+        border-radius: 16px;
+      }
+
+      .mahi-product-logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+      }
+
+      .mahi-product-logo-fallback {
+        font-size: 26px;
+      }
+
+      .mahi-product-card h3 {
+        font-size: 15px;
+      }
+
+      .mahi-product-card p {
+        font-size: 11px;
+      }
+
+    }
+
+    /* Product cards are fully clickable links */
+    .mahi-product-link {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .mahi-product-link:visited {
+      color: inherit;
+    }
+
+    .mahi-product-link:focus-visible {
+      outline: 3px solid #8f4fff;
+      outline-offset: 4px;
+    }
+
+    /* ==========================================
+       REDUCED MOTION
+       ========================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .mahi-product-card {
+        transition: none;
+      }
+
+      .mahi-product-card:hover {
+        transform: none;
+      }
+
+    }
+
+
+    /* ==========================================
+       MOBILE SPACING & FOOTER ALIGNMENT FIX
+       Keeps the book and product cards unchanged.
+       ========================================== */
+    @media (max-width: 600px) {
+      /* Room for the page counter / arrow buttons before Our Products. */
+      body .mahi-products {
+        margin-top: 38px !important;
+        padding-top: 38px !important;
+      }
+
+      /* A centered brand block: logo, heading, then description. */
+      body .mahi-footer {
+        padding: 34px 18px 24px !important;
+      }
+      body .mahi-footer-inner {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 22px !important;
+        text-align: center !important;
+        width: 100%;
+      }
+      body .mahi-footer-brand {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 12px !important;
+        width: 100%;
+        max-width: 340px;
+        margin: 0 auto;
+      }
+      body .mahi-footer-brand img {
+        width: 58px !important;
+        height: 58px !important;
+        flex-shrink: 0;
+        object-fit: contain;
+      }
+      body .mahi-footer-brand > div {
+        width: 100%;
+        min-width: 0;
+        text-align: center;
+      }
+      body .mahi-footer-brand h3 {
+        margin: 0 0 10px !important;
+        font-size: 18px !important;
+        line-height: 1.3;
+      }
+      body .mahi-footer-brand p {
+        margin: 0 auto !important;
+        max-width: 310px;
+        font-size: 12px !important;
+        line-height: 1.75 !important;
+        text-align: center;
+      }
+      /* Consistent 2-by-2 social links, no awkward wrapping. */
+      body .mahi-footer-links {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 12px !important;
+        width: min(100%, 340px) !important;
+        margin: 0 auto;
+      }
+      body .mahi-footer-links a {
+        display: flex !important;
+        width: 100%;
+        min-width: 0;
+        min-height: 43px;
+        padding: 10px 8px !important;
+        font-size: 11px !important;
+        white-space: nowrap;
+        text-align: center;
+      }
+      body .mahi-footer-bottom {
+        margin-top: 25px !important;
+        padding-top: 18px !important;
+        gap: 8px !important;
+        line-height: 1.5;
+      }
+    }
+
+    @media (max-width: 360px) {
+      body .mahi-footer-links { gap: 8px !important; }
+      body .mahi-footer-links a { font-size: 10px !important; padding-inline: 5px !important; }
+    }
+
+
+    /* Navigation icons — inline SVG, no icon package or CDN needed */
+    header nav a[data-target-page] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    header nav .mahi-nav-icon {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 15px;
+      display: block;
+    }
+    header nav .mahi-nav-label { display: inline-block; }
+    @media (max-width: 600px) {
+      header nav a[data-target-page] { gap: 4px; padding-inline: 4px; }
+      header nav .mahi-nav-icon { width: 12px; height: 12px; flex-basis: 12px; }
+    }
+    @media (max-width: 360px) {
+      header nav a[data-target-page] { gap: 3px; padding-inline: 2px; }
+      header nav .mahi-nav-icon { width: 11px; height: 11px; flex-basis: 11px; }
+    }
+
+    /* NAVBAR: colorful selected label and gentle button-like zoom, no active ring */
+    header nav a[data-target-page] {
+      transform-origin: center;
+      transition: transform .22s ease, background-color .22s ease, box-shadow .22s ease !important;
+    }
+    header nav a[data-target-page][aria-current="page"],
+    header nav a[data-target-page].active,
+    header nav a[data-target-page].is-active {
+      color: #8f4fff !important;
+      border-color: transparent !important;
+      outline: none !important;
+      box-shadow: 0 5px 16px rgba(143,79,255,.14) !important;
+      background: #fff !important;
+      transform: scale(1.045);
+    }
+    header nav a[data-target-page][aria-current="page"] .mahi-nav-label,
+    header nav a[data-target-page].active .mahi-nav-label,
+    header nav a[data-target-page].is-active .mahi-nav-label {
+      background: linear-gradient(110deg,#445cff 0%,#8f4fff 55%,#ff4fb8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header nav a[data-target-page][aria-current="page"] .mahi-nav-icon,
+    header nav a[data-target-page].active .mahi-nav-icon,
+    header nav a[data-target-page].is-active .mahi-nav-icon { color: #8f4fff; }
+    header nav a[data-target-page][aria-current="page"]::before,
+    header nav a[data-target-page][aria-current="page"]::after,
+    header nav a[data-target-page].active::before,
+    header nav a[data-target-page].active::after,
+    header nav a[data-target-page].is-active::before,
+    header nav a[data-target-page].is-active::after { border: none !important; opacity: 0 !important; }
+    @media (hover:hover) {
+      header nav a[data-target-page]:hover { transform: scale(1.055); }
+    }
+    header nav a[data-target-page]:active { transform: scale(.98); }
+    header nav a[data-target-page]:focus-visible { outline: 2px solid #8f4fff !important; outline-offset: 2px !important; }
+
+    /* FOOTER: colorful social icons and properly aligned labels */
+    body .mahi-footer-links a.mahi-social {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 7px !important;
+      text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .mahi-social-icon { width: 17px; height: 17px; flex: 0 0 17px; display: block; }
+    .mahi-social-instagram .mahi-social-icon { color: #e44080; }
+    .mahi-social-threads .mahi-social-icon { color: #161616; }
+    .mahi-social-whatsapp .mahi-social-icon { color: #18b96b; }
+    .mahi-social-backtop .mahi-social-icon { color: #8f4fff; }
+    @media (hover:hover) { body .mahi-footer-links a.mahi-social:hover { transform: translateY(-2px); } }
+    @media (max-width: 360px) {
+      body .mahi-footer-links a.mahi-social { gap: 4px !important; }
+      .mahi-social-icon { width: 14px; height: 14px; flex-basis: 14px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      header nav a[data-target-page], body .mahi-footer-links a.mahi-social { transition: none !important; }
+    }
+  
+    /* Slightly larger Mahi Lab logos — navbar and footer */
+    header .brand > img {
+      width: 58px !important;
+      height: 58px !important;
+      max-width: none;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    body .mahi-footer-brand > img {
+      width: 76px !important;
+      height: 76px !important;
+      max-width: none;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    @media (max-width: 600px) {
+      header .brand > img {
+        width: 48px !important;
+        height: 48px !important;
+      }
+      body .mahi-footer-brand > img {
+        width: 68px !important;
+        height: 68px !important;
+      }
+    }
+
+    /* Subtle charcoal divider under the complete navbar/header */
+    body > header#home {
+      border-bottom: 1px solid rgba(30, 27, 36, 0.24) !important;
+      box-shadow: 0 1px 0 rgba(30, 27, 36, 0.035);
+    }
+
+    /* Selected navbar item: slightly larger gradient text, no outline ring */
+    header nav a[data-target-page][aria-current="page"],
+    header nav a[data-target-page].active,
+    header nav a[data-target-page].is-active {
+      transform: scale(1.075) !important;
+      border: 1px solid transparent !important;
+    }
+    header nav a[data-target-page][aria-current="page"] .mahi-nav-label,
+    header nav a[data-target-page].active .mahi-nav-label,
+    header nav a[data-target-page].is-active .mahi-nav-label {
+      font-size: 1.07em !important;
+      font-weight: 750 !important;
+    }
+    @media (max-width: 600px) {
+      header nav a[data-target-page][aria-current="page"],
+      header nav a[data-target-page].active,
+      header nav a[data-target-page].is-active {
+        transform: scale(1.045) !important;
+      }
+      header nav a[data-target-page][aria-current="page"] .mahi-nav-label,
+      header nav a[data-target-page].active .mahi-nav-label,
+      header nav a[data-target-page].is-active .mahi-nav-label {
+        font-size: 1.04em !important;
+      }
+    }
+
+
+    /* Slim, inset black divider below navbar — no heavy shadow */
+    html body > header#home {
+      border-bottom: 0 !important;
+      box-shadow: none !important;
+      position: relative;
+    }
+    html body > header#home::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 5%;
+      right: 5%;
+      height: 1px;
+      background: #171717;
+      pointer-events: none;
+      z-index: 20;
+    }
+    /* Bring the magazine slightly closer to the navbar on small screens. */
+    @media (max-width: 900px) {
+      .stage { padding-top: calc(var(--header-height) - 12px) !important; }
+    }
+
+    /* FIX: Remove oversized blank space between mobile navbar and magazine.
+       The header already occupies its own layout height, so adding
+       --header-height again to the stage creates a second empty gap. */
+    @media (max-width: 900px) {
+      html body .workspace .stage {
+        padding-top: 12px !important;
+      }
+    }
+    @media (max-width: 600px) {
+      html body .workspace .stage {
+        padding-top: 8px !important;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- ==========================================
+       THE MAHI LAB HEADER
+       ========================================== -->
+
+  <header id="home">
+
+    <!-- ==========================================
+         LOGO AND BRAND
+         ========================================== -->
+
+    <a
+      class="brand"
+      href="#home"
+      data-target-page="0"
+      aria-label="The Mahi Lab - Back to home"
+    >
+
+      <img
+        src="./assets/logos/mahilab.png"
+        alt="The Mahi Lab logo"
+      />
+
+      <div class="brand-copy">
+
+        <strong class="brand-name">
+          Mahi Lab
+        </strong>
+
+        <small class="brand-hint">
+          Select an option to view its page
+        </small>
+
+      </div>
+
+    </a>
+
+    <!-- ==========================================
+         MAGAZINE PAGE NAVIGATION
+         ========================================== -->
+
+    <nav aria-label="The Mahi Lab magazine sections">
+
+      <!-- HOME -->
+
+      <a
+        href="#home"
+        data-target-page="0"
+        aria-current="page"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v12h14V9"/><path d="M9 21v-7h6v7"/></svg><span class="mahi-nav-label">Home</span>
+      </a>
+
+      <!-- TOPICS -->
+
+      <a
+        href="#topics"
+        data-target-page="3"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg><span class="mahi-nav-label">Topics</span>
+      </a>
+
+      <!-- FREELANCING SERVICES -->
+
+      <a
+        href="#services"
+        data-target-page="4"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12a18 18 0 0 0 18 0M12 12v3"/></svg><span class="mahi-nav-label">Freelancing Services</span>
+      </a>
+
+      <!-- HOW TO LEARN -->
+
+      <a
+        href="#learning"
+        data-target-page="2"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-5 9 5-9 5-9-5Z"/><path d="M7 11v5c3 3 7 3 10 0v-5M21 9v7"/></svg><span class="mahi-nav-label">How to Learn</span>
+      </a>
+
+      <!-- CLOUD AND TOOLS -->
+
+      <a
+        href="#cloud"
+        data-target-page="8"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4 4 0 0 1-.6-7.95A6 6 0 0 1 18 9a4.5 4.5 0 0 1 0 9H7Z"/><path d="m10 13 2 2 3-4"/></svg><span class="mahi-nav-label">Cloud &amp; Tools</span>
+      </a>
+
+      <!-- LATEST POSTS -->
+
+      <a
+        href="#posts"
+        data-target-page="1"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg><span class="mahi-nav-label">Latest Posts</span>
+      </a>
+
+      <!-- FOLLOW US -->
+
+      <a
+        href="#follow"
+        data-target-page="11"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a3 3 0 1 0-2.8-4"/><path d="M6 8a3 3 0 1 0 0-6"/><path d="M3 20v-2a5 5 0 0 1 10 0v2M15 14a4 4 0 0 1 6 4v2"/><circle cx="8" cy="9" r="3"/></svg><span class="mahi-nav-label">Follow Us</span>
+      </a>
+
+    </nav>
+
+  </header>
+
+  <!-- ==========================================
+       INTERACTIVE 3D MAGAZINE WORKSPACE
+       ========================================== -->
+
+  <div class="workspace">
+
+    <!-- ==========================================
+         MAIN MAGAZINE STAGE
+         ========================================== -->
+
+    <main
+      class="stage"
+      id="stage"
+      aria-label="The Mahi Lab interactive magazine"
+    >
+
+      <div
+        class="reader-mount"
+        id="reader-mount"
+      ></div>
+
+    </main>
+
+    <!-- ==========================================
+         LEAFTHROUGH SETTINGS PANEL
+         Keep this for main-element.ts compatibility
+         ========================================== -->
+
+    <aside
+      class="panel"
+      id="panel"
+      aria-label="Reader settings"
+    ></aside>
+
+  </div>
+
+  <!-- ==========================================
+       OUR PRODUCTS SECTION
+       Below magazine, above footer
+       ========================================== -->
+
+  <section
+    class="mahi-products"
+    id="products"
+    aria-labelledby="products-heading"
+  >
+
+    <div class="mahi-products-inner">
+
+      <!-- SECTION HEADING -->
+
+      <div class="mahi-products-heading">
+
+        <h2 id="products-heading">
+         Discover Our Free Products
+        </h2>
+
+        <p class="mahi-products-intro">
+           made to help you learn, build, and grow.
+        </p>
+
+      </div>
+
+      <!-- PRODUCT GRID -->
+
+      <div class="mahi-product-grid">
+
+        <!-- ======================================
+             PRODUCT 01 - GINGER DRAFTS
+             ====================================== -->
+
+        <a class="mahi-product-card mahi-product-link" href="https://gingerdrafts.mahilab.in/" target="_blank" rel="noopener noreferrer" aria-label="Open Ginger Drafts website">
+
+         <img
+  class="mahi-product-logo"
+  src="./assets/logos/gingerdrafts.png"
+  alt="Ginger Drafts logo"
+/>
+
+          <div class="mahi-product-content">
+
+            <h3>
+              Ginger Drafts
+            </h3>
+
+            <p>
+              A free resume builder with professional
+              ATS-friendly templates to help you
+              create your next resume.
+            </p>
+
+          </div>
+
+        </a>
+
+        <!-- ======================================
+             PRODUCT 02 - ASK BUN
+             ====================================== -->
+
+        <a class="mahi-product-card mahi-product-link" href="https://askbun.mahilab.in/" target="_blank" rel="noopener noreferrer" aria-label="Open Ask Bun website">
+
+       <img
+  class="mahi-product-logo"
+  src="./assets/logos/askbun.png"
+  alt="Ask Bun logo"
+/>
+
+          <div class="mahi-product-content">
+
+            <h3>
+              Ask Bun
+            </h3>
+
+            <p>
+              Practice interview questions and answers,
+              explore programming concepts, and
+              improve your coding skills.
+            </p>
+
+          </div>
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ==========================================
+       THE MAHI LAB FOOTER
+       Outside magazine workspace
+       ========================================== -->
+
+  <footer class="mahi-footer">
+
+    <div class="mahi-footer-inner">
+
+      <!-- ======================================
+           FOOTER BRAND
+           ====================================== -->
+
+      <div class="mahi-footer-brand">
+
+        <img
+          src="./assets/logos/mahilab.png"
+          alt="The Mahi Lab logo"
+        />
+
+        <div>
+
+          <h3>
+            Mahi Lab
+          </h3>
+
+          <p>
+          The Mahi Lab makes technology simple through free tutorials and practical learning.
+            Explore AI, Cloud, DevOps, Cybersecurity, and innovative tools to learn, build, and grow.
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- ======================================
+           FOOTER DESCRIPTION
+           ====================================== -->
+
+      <!-- <p class="mahi-footer-description">
+
+        Learn. Build. Grow.
+
+        <span>
+          Telugu Tech Tutorials &amp;
+          Freelancing Services.
+        </span>
+
+      </p> -->
+
+      <!-- ======================================
+           FOOTER LINKS
+           ====================================== -->
+
+      <div class="mahi-footer-links">
+
+        <a class="mahi-social mahi-social-instagram"
+          href="https://www.instagram.com/mahilab.in/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg class="mahi-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          <span>Instagram</span>
+        </a>
+
+        <a class="mahi-social mahi-social-threads"
+          href="https://www.threads.com/@mahilab.in?xmt=AQG0MNlPMXMEXn3Tzl4Dlu4dmAsxNQOlaXZErnJTUf2HCso"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg class="mahi-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.7 8.4c-.8-2.6-2.8-4-5.7-4-4.1 0-6.7 3-6.7 7.7 0 5 2.8 8 7.1 8 3.5 0 5.7-1.8 5.7-4.5 0-2.5-2.1-4-5.5-4-2.5 0-4 1.1-4 2.9 0 1.6 1.3 2.5 3 2.5 3.1 0 4.9-2.8 4.4-6.1-.3-2-1.4-3.6-4.1-3.6"/></svg>
+          <span>Threads</span>
+        </a>
+
+        <a class="mahi-social mahi-social-whatsapp"
+          href="https://wa.me/918332865306"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat with The Mahi Lab on WhatsApp Business"
+        >
+          <svg class="mahi-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4.2A8 8 0 1 1 20 11.5Z"/><path d="M9 8.5c.2 2.8 2.6 5.3 5.5 5.8l1.5-1.4-2-1-1 1c-1.3-.5-2.3-1.5-2.8-2.8l1-1-1-2-1.2 1.4Z"/></svg>
+          <span>WhatsApp Business</span>
+        </a>
+
+        <a class="mahi-social mahi-social-backtop" href="#home">
+          <svg class="mahi-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/><path d="M12 8v12"/></svg>
+          <span>Back to Top</span>
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- ======================================
+         COPYRIGHT SECTION
+         ====================================== -->
+
+    <div class="mahi-footer-bottom">
+
+      <span>
+        © 2026 Mahi Lab. All rights reserved.
+      </span>
+
+      <span>
+       The Modern StartUp
+      </span>
+
+    </div>
+
+  </footer>
+
+  <!-- ==========================================
+       LEAFTHROUGH + MAHI LAB NAVIGATION SCRIPT
+       ========================================== -->
+
+  <script
+    type="module"
+    src="./main-element.ts"
+  ></script>
+
+</body>
+</html>

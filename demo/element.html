@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f9f4ff" />
+  <link rel="icon" type="image/png" href="./assets/logos/mahilab.png" />
+  <title>Mahi Lab</title>
+  <meta name="description" content="Explore The Mahi Lab's interactive 3D magazine. Learn Linux, DevOps, Cloud, Full Stack, AI, coding, and discover freelancing services." />
+
+  <!-- Apply saved theme before Vite renders to prevent a white flash. -->
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem('mahilab-theme') === 'dark' ? 'dark' : 'light';
+    } catch {
+      document.documentElement.dataset.theme = 'light';
+    }
+  </script>
+
+  <!-- Dark-theme overrides. Leave your existing demo/style.css unchanged. -->
+  <style>
+    /* The switch stays at the top-right, opposite the logo. */
+    .theme-toggle {
+      position: absolute;
+      z-index: 30;
+      top: 50%;
+      right: calc(16px + var(--safe-right, 0px));
+      transform: translateY(-50%);
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      padding: 0;
+      border: 1px solid #c9c1db;
+      border-radius: 50%;
+      background: #fff;
+      color: #211c2b;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .theme-toggle:hover { transform: translateY(-50%) scale(1.06); }
+    .theme-toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+    .theme-icon { width: 22px; height: 22px; }
+    .theme-icon-sun { display: none; }
+    @media (min-width: 901px) {
+      header { padding-right: calc(84px + var(--safe-right, 0px)); }
+    }
+    @media (max-width: 900px) {
+      .theme-toggle {
+        top: 13px;
+        right: calc(12px + var(--safe-right, 0px));
+        transform: none;
+        width: 42px;
+        height: 42px;
+      }
+      .theme-toggle:hover { transform: scale(1.06); }
+      header .brand { max-width: calc(100% - 54px); }
+    }
+
+    /* TRUE BLACK MODE: black backgrounds, white text, gray outlines. */
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --paper: #000;
+      --paper-deep: #000;
+      --surface: #0b0b0b;
+      --ink: #f5f5f5;
+      --muted: #bababa;
+      --line: #353535;
+      --charcoal: #242424;
+      --charcoal-dark: #383838;
+      --accent: #fff;
+      --glass: #090909;
+      --glass-hover: #161616;
+      --glass-current: #111;
+      --mahi-gradient: linear-gradient(#242424, #242424);
+    }
+    html[data-theme="dark"],
+    html[data-theme="dark"] body {
+      background: #000 !important;
+      background-image: none !important;
+      color: #f5f5f5 !important;
+    }
+    html[data-theme="dark"] header,
+    html[data-theme="dark"] .workspace,
+    html[data-theme="dark"] .stage,
+    html[data-theme="dark"] .reader-mount,
+    html[data-theme="dark"] .mahi-footer {
+      background: #000 !important;
+      background-image: none !important;
+      box-shadow: none !important;
+    }
+    html[data-theme="dark"] header {
+      border-bottom: 1px solid #252525 !important;
+    }
+    html[data-theme="dark"] .stage::before {
+      display: none !important;
+      background: none !important;
+    }
+    html[data-theme="dark"] .magazine {
+      filter: drop-shadow(0 18px 25px rgba(0, 0, 0, .75)) !important;
+    }
+    html[data-theme="dark"] .brand,
+    html[data-theme="dark"] .brand-name,
+    html[data-theme="dark"] .mahi-footer-brand h3,
+    html[data-theme="dark"] .mahi-footer-description {
+      color: #fff !important;
+      text-shadow: none !important;
+    }
+    html[data-theme="dark"] .brand-hint,
+    html[data-theme="dark"] .mahi-footer-brand p,
+    html[data-theme="dark"] .mahi-footer-description span,
+    html[data-theme="dark"] .mahi-footer-bottom {
+      color: #bcbcbc !important;
+    }
+    /* Monochrome logos in dark mode; magazine artwork stays unchanged. */
+    html[data-theme="dark"] .brand img,
+    html[data-theme="dark"] .mahi-footer-brand img {
+      filter: grayscale(1) !important;
+    }
+    html[data-theme="dark"] nav a,
+    html[data-theme="dark"] nav a:hover {
+      color: #fff !important;
+      background: #090909 !important;
+      background-image: none !important;
+      border: 2px solid #343434 !important;
+      box-shadow: none !important;
+    }
+    html[data-theme="dark"] nav a:hover {
+      border-color: #8c8c8c !important;
+    }
+    html[data-theme="dark"] nav a[aria-current="page"],
+    html[data-theme="dark"] nav a[aria-current="page"]:hover {
+      color: #fff !important;
+      background: #050505 !important;
+      background-image: none !important;
+      border: 2px solid #fff !important;
+      box-shadow: none !important;
+    }
+    html[data-theme="dark"] nav a::after { color: #aaa !important; }
+    html[data-theme="dark"] .theme-toggle {
+      color: #fff !important;
+      background: #080808 !important;
+      border-color: #777 !important;
+      box-shadow: none !important;
+    }
+    html[data-theme="dark"] .theme-icon-moon { display: none; }
+    html[data-theme="dark"] .theme-icon-sun { display: block; }
+
+    html[data-theme="dark"] .stage-arrow,
+    html[data-theme="dark"] .stage-arrow:hover:not(:disabled),
+    html[data-theme="dark"] .github,
+    html[data-theme="dark"] .settings-toggle,
+    html[data-theme="dark"] .code-toggle,
+    html[data-theme="dark"] .mahi-footer-links a,
+    html[data-theme="dark"] .mahi-footer-links a:hover {
+      color: #f5f5f5 !important;
+      background: #101010 !important;
+      background-image: none !important;
+      border-color: #484848 !important;
+      box-shadow: none !important;
+    }
+    html[data-theme="dark"] .page-indicator,
+    html[data-theme="dark"] .stage-guide-primary,
+    html[data-theme="dark"] .panel-intro h2,
+    html[data-theme="dark"] .dev-panel dd,
+    html[data-theme="dark"] .dev-panel > details > summary {
+      color: #f5f5f5 !important;
+    }
+    html[data-theme="dark"] .stage-guide,
+    html[data-theme="dark"] .panel,
+    html[data-theme="dark"] .settings-open .panel,
+    html[data-theme="dark"] .code-dialog,
+    html[data-theme="dark"] .code-dialog pre,
+    html[data-theme="dark"] .dev-panel pre {
+      color: #eee !important;
+      background: #0a0a0a !important;
+      background-image: none !important;
+      border-color: #353535 !important;
+      box-shadow: none !important;
+    }
+    html[data-theme="dark"] .stage-guide-secondary,
+    html[data-theme="dark"] .stage-guide .stage-guide-secondary,
+    html[data-theme="dark"] .panel-intro p,
+    html[data-theme="dark"] .dev-panel .name,
+    html[data-theme="dark"] .dev-panel dt,
+    html[data-theme="dark"] .dev-panel output {
+      color: #bbb !important;
+    }
+    html[data-theme="dark"] .dev-panel .field input,
+    html[data-theme="dark"] .dev-panel .field select,
+    html[data-theme="dark"] .dev-panel .goto input,
+    html[data-theme="dark"] .dev-panel button:not(.reset),
+    html[data-theme="dark"] .copy-code {
+      color: #fff !important;
+      background: #171717 !important;
+      background-image: none !important;
+      border-color: #555 !important;
+      box-shadow: none !important;
+      accent-color: #fff !important;
+    }
+    html[data-theme="dark"] .mahi-footer {
+      border-top: 1px solid #292929 !important;
+    }
+    html[data-theme="dark"] .mahi-footer-bottom {
+      border-top-color: #292929 !important;
+    }
+
+    /* Circular reveal expands from the theme toggle. */
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none !important;
+      mix-blend-mode: normal;
+    }
+    ::view-transition-old(root) { z-index: 1; }
+    ::view-transition-new(root) { z-index: 2; }
+    @media (prefers-reduced-motion: reduce) {
+      .theme-toggle { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header id="home">
+    <a class="brand" href="#home" data-target-page="0" aria-label="The Mahi Lab - Back to home">
+      <img src="./assets/logos/mahilab.png" alt="The Mahi Lab logo" />
+      <div class="brand-copy">
+        <strong class="brand-name">Mahi Lab</strong>
+        <small class="brand-hint">Select an option to view its page</small>
+      </div>
+    </a>
+
+    <nav aria-label="The Mahi Lab magazine sections">
+      <a href="#home" data-target-page="0" aria-current="page">Home</a>
+      <a href="#topics" data-target-page="3">Topics</a>
+      <a href="#services" data-target-page="4">Freelancing Services</a>
+      <a href="#learning" data-target-page="2">How to Learn</a>
+      <a href="#cloud" data-target-page="8">Cloud &amp; Tools</a>
+      <a href="#posts" data-target-page="1">Latest Posts</a>
+      <a href="#follow" data-target-page="11">Follow Us</a>
+    </nav>
+
+    <button id="theme-toggle" class="theme-toggle" type="button"
+      aria-label="Switch to dark theme" aria-pressed="false" title="Switch to dark theme">
+      <svg class="theme-icon theme-icon-moon" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20.985 12.486A9 9 0 0 1 11.514 3.015 9 9 0 1 0 20.985 12.486Z" />
+      </svg>
+      <svg class="theme-icon theme-icon-sun" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+      </svg>
+    </button>
+  </header>
+
+  <div class="workspace">
+    <main class="stage" id="stage" aria-label="The Mahi Lab interactive magazine">
+      <div class="reader-mount" id="reader-mount"></div>
+    </main>
+    <aside class="panel" id="panel" aria-label="Reader settings"></aside>
+  </div>
+
+  <footer class="mahi-footer">
+    <div class="mahi-footer-inner">
+      <div class="mahi-footer-brand">
+        <img src="./assets/logos/mahilab.png" alt="The Mahi Lab logo" />
+        <div><h3>The Mahi Lab</h3><p>Technology Made Simple.</p></div>
+      </div>
+      <p class="mahi-footer-description">
+        Learn. Build. Grow.
+        <span>Telugu Tech Tutorials &amp; Freelancing Services.</span>
+      </p>
+      <div class="mahi-footer-links">
+        <a href="https://www.instagram.com/themahilab.in/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+        <a href="#home">Back to Top ↑</a>
+      </div>
+    </div>
+    <div class="mahi-footer-bottom">
+      <span>© 2026 The Mahi Lab. All rights reserved.</span>
+      <span>Built by Usman Shaik</span>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const toggle = document.getElementById('theme-toggle');
+      const themeMeta = document.querySelector('meta[name="theme-color"]');
+      if (!toggle) return;
+      let switching = false;
+
+      function applyTheme(theme) {
+        root.dataset.theme = theme;
+        try { localStorage.setItem('mahilab-theme', theme); } catch {}
+        const isDark = theme === 'dark';
+        const label = isDark ? 'Switch to light theme' : 'Switch to dark theme';
+        toggle.setAttribute('aria-label', label);
+        toggle.setAttribute('title', label);
+        toggle.setAttribute('aria-pressed', String(isDark));
+        themeMeta?.setAttribute('content', isDark ? '#000000' : '#f9f4ff');
+      }
+
+      toggle.addEventListener('click', () => {
+        if (switching) return;
+        const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!document.startViewTransition || reducedMotion) {
+          applyTheme(next);
+          return;
+        }
+
+        const rect = toggle.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        const radius = Math.hypot(
+          Math.max(x, innerWidth - x),
+          Math.max(y, innerHeight - y)
+        );
+        switching = true;
+        const transition = document.startViewTransition(() => applyTheme(next));
+        transition.ready.then(() => {
+          root.animate(
+            { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+            {
+              duration: 800,
+              easing: 'cubic-bezier(.22,1,.36,1)',
+              pseudoElement: '::view-transition-new(root)'
+            }
+          );
+        }).catch(() => {});
+        transition.finished.catch(() => {}).finally(() => { switching = false; });
+      });
+
+      applyTheme(root.dataset.theme === 'dark' ? 'dark' : 'light');
+    })();
+  </script>
+
+  <script type="module" src="./main-element.ts"></script>
+</body>
+</html>

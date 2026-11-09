@@ -1,0 +1,519 @@
+# LeafThrough
+
+A 3D magazine you can flip through. Pages are printed paper: they bend, roll, catch the
+light and cast shadows. Built on three.js, written in TypeScript, with bindings for React,
+Vue, Svelte, and a Web Component for everything else (Angular, Solid, Lit, plain HTML). It
+can also be [one object in your own three.js scene](#in-your-own-threejs-scene).
+
+**[Live demo](https://dmtrbrl.github.io/leafthrough/)**, with one page per binding and a dev panel
+for every option, method and event, and
+[a three.js scene](https://dmtrbrl.github.io/leafthrough/three.html) with the magazine in it.
+
+- **Two layouts.** `spread` is an open magazine with sheets turning over the spine.
+  `single` shows one page at a time, and read pages roll up behind the magazine. `auto`
+  picks between them with a media query.
+- **Real paper feel.** Pages bulge off the spine and nest on the stacks. They bend while
+  turning and fold towards wherever you hold them. Paper grain, glossy ink and a little
+  show-through complete the look.
+- **Drag, click, press and hold, or keys.** Drags follow your hand, and a released page
+  falls with the speed you gave it.
+- **Customizable** paper, lighting, motion, interactions and page shape.
+- **Accessible.** Keyboard control, screen reader announcements, page descriptions and
+  text for screen readers, reduced motion support, and a plain view without 3D.
+- **Big magazines.** Pages load nearest first and unload when the reader is far away, so
+  memory stays flat however long the issue.
+
+## Install
+
+```bash
+npm install leafthrough three
+```
+
+`three` (r160 or newer) is a peer dependency. React, Vue and Svelte are optional peers;
+install only the one you use.
+
+## Quick start
+
+Every binding renders into an element you size with CSS. The magazine fits itself inside
+(see [Sizing](#sizing)).
+
+### Vanilla
+
+```ts
+import { LeafThrough } from 'leafthrough'
+
+const magazine = new LeafThrough(document.querySelector('#magazine')!, {
+  pages: ['/pages/01.jpg', '/pages/02.jpg', '/pages/03.jpg', '/pages/04.jpg'],
+})
+
+magazine.addEventListener('pagechange', (e) => console.log(e.detail.visiblePages))
+document.querySelector('#next')!.addEventListener('click', () => magazine.next())
+```
+
+### React (18+)
+
+```tsx
+import { useRef } from 'react'
+import { LeafThrough, type LeafThroughHandle } from 'leafthrough/react'
+
+export function Issue({ pages }: { pages: string[] }) {
+  const magazine = useRef<LeafThroughHandle>(null)
+  return (
+    <>
+      <LeafThrough ref={magazine} pages={pages} style={{ height: '80vh' }} onPageChange={(d) => console.log(d.page)} />
+      <button onClick={() => magazine.current?.next()}>Next</button>
+    </>
+  )
+}
+```
+
+The component is marked `'use client'` and creates nothing on the server, so it works in
+Next.js and other SSR setups. Props are compared by value, so inline objects such as
+`paper={{ grain: false }}` don't cause rebuilds. Callbacks can change freely.
+
+### Vue (3.3+)
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { LeafThrough } from 'leafthrough/vue'
+
+const magazine = ref()
+const pages = ['/pages/01.jpg', '/pages/02.jpg', '/pages/03.jpg']
+</script>
+
+<template>
+  <LeafThrough ref="magazine" :pages="pages" style="height: 80vh" @pagechange="(d) => console.log(d.page)" />
+  <button @click="magazine.next()">Next</button>
+</template>
+```
+
+The template ref exposes `next()`, `prev()`, `goTo()` and `instance`. Events are
+`pagechange`, `ready` and `error`.
+
+### Svelte (4 and 5)
+
+```svelte
+<script lang="ts">
+  import { leafThrough, type LeafThrough } from 'leafthrough/svelte'
+
+  const pages = ['/pages/01.jpg', '/pages/02.jpg', '/pages/03.jpg']
+  let magazine: LeafThrough
+</script>
+
+<div style="height: 80vh" use:leafThrough={{ pages, onInit: (m) => (magazine = m) }}></div>
+<button onclick={() => magazine.next()}>Next</button>
+```
+
+### Web Component (Angular, Solid, Lit, plain HTML)
+
+```html
+<script type="module">import 'leafthrough/element'</script>
+
+<leaf-through style="height: 80vh" layout="auto" start-page="0" label="Spring issue">
+  <img src="/pages/01.jpg" alt="Cover: a lighthouse at dusk" />
+  <figure>
+    <img src="/pages/02.jpg" alt="" />
+    <figcaption>Contents. 3: The keeper's year. 7: Charts of the coast.</figcaption>
+  </figure>
+  <img src="/pages/03.jpg" alt="" />
+</leaf-through>
+```
+
+You can give pages as `<img>` children, as a `pages` attribute (a JSON array or
+comma-separated URLs), or through the `pages` property. An image's `alt` describes its
+page, and a `<figcaption>` beside it in a `<figure>` gives the page's text (see
+[Accessibility](#accessibility)). Simple options are attributes: `start-page`, `layout`,
+`spread-query`, `page-aspect`, `loop`, `bleed`, `label`, `keyboard`, `preload` and `plain`.
+Everything else goes through the `options` property. The element has `next()`, `prev()`,
+`goTo()`, `page`, `pageCount` and `instance`. It fires `pagechange`, `ready`, `pageload`
+(detail `{ page }`) and `pageerror` (detail `{ error, page }`) events, which bubble. The last one isn't
+called `error`, because on the DOM that means a script error and reaches `window`, where
+error trackers listen. To register the element under another tag, call
+`defineLeafThrough('my-tag')`.
+
+**Angular**: import `leafthrough/element` once (for example in `main.ts`). Add
+`CUSTOM_ELEMENTS_SCHEMA` to the component, then bind with
+`[pages]="pages" (pagechange)="onPage($event.detail)"`.
+
+**Solid**: `<leaf-through prop:pages={pages()} on:pagechange={(e) => setPage(e.detail.page)} />`.
+
+## In your own three.js scene
+
+`LeafThroughObject` is the magazine as a `THREE.Group`, for a scene you already have. It
+draws with your renderer and takes pointer input through your camera, so it turns wherever
+it lies, however it's moved, turned or scaled. Every option, method, property and event of
+`LeafThrough` works the same, apart from those about its own canvas and DOM: the options
+`bleed`, `maxPixelRatio`, `plain`, `label` and `formatPageLabel`, and the properties
+`plain` and `element`. It has one option of its own, `deform`
+([Reshaping the paper](#reshaping-the-paper)), and its sheets stand apart by default
+([Depth](#depth)).
+
+```ts
+import { LeafThroughObject } from 'leafthrough'
+
+const magazine = new LeafThroughObject({ renderer, camera }, { pages, layout: 'spread' })
+magazine.rotation.x = -Math.PI / 2   // lay it on the table
+magazine.scale.setScalar(0.21)        // a page 21 cm wide, in a scene measured in metres
+scene.add(magazine)
+
+renderer.setAnimationLoop((now) => {
+  magazine.tick(now)   // advance the pages, then draw as usual
+  renderer.render(scene, camera)
+})
+```
+
+- **Units.** A page is 1 wide and `pageAspect` tall. The spine runs up the y axis at
+  x = 0 and the pages lie on the z = 0 plane, facing +z. A spread closed on its front
+  cover shows it at x 0 to 1, and closed on its back cover at x -1 to 0.
+  `magazine.bounds.pages` is the pages at rest, the rectangle to frame with your camera;
+  `magazine.bounds.reach` is everything a turning page sweeps through.
+- **Input.** The magazine listens for pointer events on `renderer.domElement` (or the
+  `domElement` you pass, which must show exactly the camera's view). It takes presses in
+  its hit area: the pages in `spread` (only the cover's side while closed), and in
+  `single` a box round the page with a strip left of the spine for turning back. It
+  doesn't look at your scene, so objects in front of the magazine don't block it.
+  `magazine.covers(clientX, clientY)` tells you whether it takes a press there; check that
+  in your own handlers to leave such presses alone. Hide the magazine (`visible = false`,
+  on it or a parent) and it takes none. With `interaction.keyboard: true` the keys work
+  while that element has focus; a canvas only takes focus with a `tabIndex`, so give it
+  one or use `'global'`. Drags scale with the magazine's size on screen, so they feel the
+  same near or far. For touch drags, give the element `touch-action: pan-y pinch-zoom`
+  (or `none`), so the browser doesn't take them for scrolling.
+- **Light.** The paper is a `MeshStandardMaterial`, lit by your scene's lights,
+  environment, fog and tone mapping. Of the `lighting` options, `shadows` makes the
+  sheets cast and receive shadows when your renderer draws them, and `sun.position`
+  should point towards your shadow-casting directional light, in the magazine's own
+  frame (only the direction counts). It places the shadow a turning sheet casts right by
+  the spine, where the shadow map can't. `update({ lighting: { shadows } })` switches the
+  sheets' shadows without a rebuild. Use it rather than setting `castShadow` or
+  `receiveShadow` on the sheets, which the magazine sets itself.
+  With three.js 0.182 or later, use `THREE.BasicShadowMap` on your renderer for iOS Safari:
+  from that version PCF goes through a hardware depth comparison that can shade the whole
+  scene there. The paper restores the soft PCF look of directional and spot light shadows
+  itself when your renderer uses Basic; point light shadows stay hard-edged. For another
+  receiving material, use `withSoftBasicShadows` in its `onBeforeCompile` callback; the
+  [three.js demo](demo/main-three.ts) shows this for a `ShadowMaterial` floor. Older
+  three.js versions sample PCF in the shader, which works on iOS, so keep PCF with them.
+- **Depth.** See [Depth](#depth): the sheets stand a little apart, which needs enough depth
+  precision from your camera.
+- **Several magazines.** Magazines drawn by the same renderer share the built-in grain's
+  texture and the sheet geometry of each layout and page aspect: made for the first, freed
+  with the last. The grain itself is drawn once per page, and the wrinkles are sampled once
+  per aspect.
+- **Rendering on demand.** If you only draw when something changes, listen for `change`:
+  it fires when input, loading or a method call needs a frame. Then keep drawing while
+  `tick()` returns true.
+- **Accessibility is yours.** With no DOM of its own, it has no live region, no page
+  descriptions and no plain view: pages' `alt` and `text` aren't read. Describe the pages
+  in your own page, and announce `pagechange` if readers should hear it.
+
+```ts
+magazine.tick(now)                       // advance; true while the pages still move
+magazine.covers(e.clientX, e.clientY)    // whether the magazine takes a press there
+magazine.bounds                          // { pages, reach }, in the magazine's own units
+magazine.camera = otherCamera            // cast input from another camera
+magazine.enabled = false                 // cancel active gestures and stop taking pointer/key input
+magazine.update({ lighting: { shadows: false } })   // sheets stop casting and receiving, no rebuild
+magazine.addEventListener('change', () => requestRender())
+magazine.addEventListener('pagechange', (e) => e.detail)   // also ready, pageload, error
+magazine.dispose()                       // free everything and leave the scene
+```
+
+### Depth
+
+In a `LeafThroughObject` the sheets stand apart, `paper.sheetGap` `0.0005` page widths
+(0.1 mm paper on a 210 mm page), and sort by their real depth, so they stay in order from the front, from
+behind and at any angle. Your camera has to resolve that gap. A 24-bit depth buffer tells
+apart points roughly `distance² / (near × 16,777,216)` apart, in your scene's units, and that
+must be well under the gap in the same units. Take a booklet 120 mm wide in a scene in
+metres, seen from 4.4 m: its gap is 0.06 mm. With the camera's `near` at 0.1 the buffer
+resolves about 0.012 mm, which is enough; at 0.01 it's about 0.12 mm, and hidden pages
+flicker through. So keep `near` as large as your scene allows; `far` matters much less.
+The magazine never changes your camera. With a coarse depth buffer you can widen the gap.
+
+The standalone magazine instead draws sheets that touch at the spine and lets
+`paper.depthBias` sort them: a polygon offset brings each sheet nearer the camera than
+those under it. You can turn that on here too (`paper: { sheetGap: 0, depthBias: true }`),
+but it has two limits in a scene of your own. It assumes the magazine is seen from the
+front, so from behind it brings the wrong sheets forward. And it moves sheets by steps of
+the depth buffer, so how far depends on `near`, `far` and distance: with a small `near`
+it can pull pages through whatever lies just in front of the magazine.
+
+### Reshaping the paper
+
+Experimental: this may change in a patch release. `deform` reshapes the paper with your
+own GLSL, after the magazine has shaped it: bend a booklet coming out of its case, squeeze
+it, roll it. It applies wherever the paper is drawn, in colour and in the shadow passes,
+and lighting follows, because normals come from the deformed shape.
+
+```ts
+const bend = { value: 0 }
+const magazine = new LeafThroughObject({ renderer, camera }, {
+  pages,
+  deform: {
+    uniforms: { uBend: bend },
+    glsl: /* glsl */ `
+      uniform float uBend;
+      vec3 deformSheet(vec3 p, vec2 uv) {
+        // curl the pages up along x, around a cylinder of radius 1 / uBend
+        if (uBend < 1e-4) return p;
+        float a = p.x * uBend;
+        float r = 1.0 / uBend - p.z;
+        return vec3(r * sin(a), p.y, 1.0 / uBend - r * cos(a));
+      }`,
+  },
+})
+
+bend.value = 1.2   // read on the next frame: no rebuild
+```
+
+- `deformSheet` gets `p`, a point of a sheet in the magazine's own units (see Units
+  above), and `uv`, where it is on that sheet: x from the spine (0) to the outer edge (1),
+  y from bottom to top. It returns where to draw that point, in the same units.
+- three.js's common GLSL (`PI`, `saturate` and so on) is available. Name your uniforms
+  with a prefix of your own, as the magazine's start with `u`.
+- Uniforms are read every frame: set `value` on your own objects, or pass new objects
+  under the same names through `update()`. Changing the GLSL, or which uniforms there are,
+  rebuilds the pages.
+- It changes only what's drawn. Pointer input, `covers()`, `bounds` and the shadow a
+  turning sheet casts by the spine still work from the undeformed pages, so turn input off
+  (`enabled = false`) while the paper is far from its own shape.
+
+The [three.js demo](https://dmtrbrl.github.io/leafthrough/three.html) takes a magazine
+out of a portrait paperboard mailer on a table; its source is
+[`demo/main-three.ts`](https://github.com/dmtrbrl/leafthrough/blob/main/demo/main-three.ts),
+with the native three.js mailer geometry in
+[`demo/envelope.ts`](https://github.com/dmtrbrl/leafthrough/blob/main/demo/envelope.ts).
+
+## Sizing
+
+The magazine fills the element you give it and keeps its proportions, centred.
+
+- **Fixed size.** Give the element a width and height, for example `height: 80vh`.
+- **Auto height.** If the element has no height of its own, the magazine takes its height
+  from the width.
+- **Bleed.** By default the magazine fits the element, and turning pages and shadows spill
+  past it, as they would off a real table. In the single layout, a turning page swings
+  out to the left of the spine. The spill stops at the edges of the document, so it never
+  adds a horizontal scrollbar; on a phone the page sweeps off the screen edge. Don't clip
+  the element with `overflow: hidden`. To keep everything inside the element, set
+  `bleed: false`; the pages then come out smaller.
+
+## Options
+
+| Option            | Type                             | Default                                           |                                                                                                            |
+| ----------------- | -------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `pages`           | `PageSource[]`                   | **required**                                      | Reading order, front cover first. URL strings, `<img>`, `<canvas>`, `ImageBitmap`, a three.js `Texture`, or `{ src, alt, text }` (see [Pages](#pages)). |
+| `startPage`       | `number`                         | `0`                                               | 0-based page to open at.                                                                                   |
+| `layout`          | `'auto' \| 'spread' \| 'single'` | `'auto'`                                          |                                                                                                            |
+| `spreadQuery`     | `string`                         | `(min-width: 768px) and (orientation: landscape)` | When `auto` uses the spread layout.                                                                        |
+| `pageAspect`      | `number`                         | `1.377`                                           | Page height ÷ width.                                                                                       |
+| `loop`            | `boolean`                        | `true`                                            | Single layout: after the last page, close and restart from the cover.                                      |
+| `bleed`           | `boolean`                        | `true`                                            | See [Sizing](#sizing).                                                                                     |
+| `paper`           | `PaperOptions`                   |                                                   | See below.                                                                                                 |
+| `lighting`        | `LightingOptions`                |                                                   | See below.                                                                                                 |
+| `motion`          | `MotionOptions`                  |                                                   | See below.                                                                                                 |
+| `interaction`     | `InteractionOptions`             |                                                   | See below.                                                                                                 |
+| `maxPixelRatio`   | `number`                         | `3`                                               | The canvas is also capped at about 15 megapixels.                                                          |
+| `preload`         | `number`                         | `6`                                               | Pages either side of the visible ones (mid-turn and rolled-up ones included) to load ahead. Pages twice as far away unload. `Infinity` keeps all. |
+| `plain`           | `boolean`                        | `false`                                           | Flat pages without 3D. Used by itself when the browser can't run WebGL.                                    |
+| `label`           | `string`                         | `'Magazine'`                                      | Accessible name.                                                                                           |
+| `formatPageLabel` | `(detail) => string`             | `"Pages 14–15 of 28"`                             | What screen readers hear when pages change.                                                                |
+| `onPageChange`    | `(detail) => void`               |                                                   | Same as the `pagechange` event.                                                                            |
+| `onReady`         | `() => void`                     |                                                   | The first pages are loaded and on screen.                                                                  |
+| `onPageLoad`      | `(page) => void`                 |                                                   | A page's image is loaded and on the GPU. Same as the `pageload` event.                                     |
+| `onError`         | `(error, page?) => void`         |                                                   | A page failed to load. It stays blank paper until `retry()`.                                               |
+
+**`paper`**
+
+|                           | Default                     |                                                                                                              |
+| ------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `grain`                   | `true`                      | `false` turns it off. You can also pass a tiling greyscale image or its URL; only its brightest specks show. The built-in one is drawn once per page, however many magazines there are. |
+| `grainScale`              | `1.46`                      | Tiles across a page.                                                                                         |
+| `grainStrength`           | `0.17`                      | How much the grain darkens.                                                                                  |
+| `showThrough`             | spread `0.04`, single `0.3` | How much of the other side shows through the paper.                                                          |
+| `inkGloss`                | `0.33`                      | How much glossier ink is than bare paper.                                                                    |
+| `roughness` / `metalness` | `0.5` / `0.17`              |                                                                                                              |
+| `backColor`               | `#fcfcf9`                   | Unprinted paper: the blank back of single-layout pages, and transparent parts of page images.                |
+| `wrinkles`                | `1`                         | Waviness of resting sheets; `0` lays them flat.                                                              |
+| `bulge`                   | `1`                         | How much pages rise off the spine.                                                                           |
+| `cutout`                  | `false`                     | Cuts each sheet to the shape of its front page: transparent areas are no paper at all, shadow included.      |
+| `sheetGap`                | `0` (`0.0005` in a scene)   | Space between stacked sheets, in page widths. 0.1 mm paper on a 120 mm page is `0.1 / 120`.                  |
+| `depthBias`               | `true` (`false` in a scene) | Draws each sheet nearer the camera than those under it, so sheets touching at the spine don't flicker. See [Depth](#depth). |
+
+**`lighting`**: `ambient: { sky, ground, intensity }`, `sun: { color, intensity, position }`,
+`shadows` (default `true`), `shadowMapSize` (default `2048`), and `floorShadow`. That last
+one is the opacity of the shadow under the open spread, default `0.15`.
+
+**`motion`**
+
+|                   | Default                    |                                                                                                            |
+| ----------------- | -------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `speed`           | `1`                        | Multiplies the speed of every turn.                                                                        |
+| `dragDistance`    | spread `0.8`, single `1.2` | Share of the canvas width that drags a page all the way over.                                              |
+| `commitThreshold` | spread `0.2`, single `0.1` | How far a released drag must have turned to finish turning.                                                |
+| `curl`            | `1`                        | How much a turning page bends.                                                                             |
+| `maxTilt`         | spread `45`, single `35`   | Degrees the fold tilts from where you hold it.                                                             |
+| `jitter`          | `true`                     | Small random differences, so no two turns look alike.                                                      |
+| `hoverLift`       | `0.03`                     | How far a hovered sheet lifts (spread).                                                                    |
+| `reducedMotion`   | `'auto'`                   | Follows `prefers-reduced-motion`. Reduced motion drops the hover lift and the random wobble; turns and hold-to-riffle work as usual. |
+
+**`interaction`**: `drag`, `click`, `hold` and `hover` all default to `true`. `keyboard`
+defaults to `true` (works while the magazine has focus); set it to `'global'` to listen on
+the whole window (form fields are ignored).
+
+## Methods, properties, events
+
+```ts
+magazine.next()                         // false at the end
+magazine.prev()                         // false at the start
+magazine.goTo(12)                       // jump
+magazine.goTo(0, { animate: true })     // riffle back to the cover
+magazine.update({ layout: 'single' })   // change some options, keep the rest and the page
+magazine.setOptions({ pages })          // replace all options: anything left out goes back to its default
+magazine.retry()                        // load failed pages again (also happens when the browser comes back online)
+magazine.dispose()                      // remove everything, free the GPU
+
+magazine.page          // first visible page, 0-based
+magazine.visiblePages  // e.g. [13, 14]
+magazine.pageCount
+magazine.layout        // 'spread' | 'single'
+magazine.plain         // true while showing flat pages (by choice, or without WebGL)
+magazine.turning       // true while a page is dragged or still finishing its turn
+magazine.element       // the focusable root, [data-leafthrough][data-layout][data-state][data-plain]
+
+magazine.addEventListener('pagechange', (e) => e.detail)  // { page, visiblePages, pageCount, layout }
+magazine.addEventListener('ready', () => {})
+magazine.addEventListener('pageload', (e) => e.detail)    // { page }
+magazine.addEventListener('error', (e) => e.detail)       // { error, page }
+```
+
+Both compare options by value. Changing callbacks or the label is free. Replacing page
+images without changing the count updates those sheets in place, and the magazine stays
+ready; loaded images whose sources stay the same survive a rebuild. Changing the page
+count, `layout`, paper, lighting, motion or interaction rebuilds the scene (a few
+milliseconds), keeps the reader on the same page, and fires `ready` again once the pages
+are in if their images changed. A rebuilt scene is laid out at once, so it can be drawn
+straight away, even when the change is made from a `ready` or `pagechange` handler during
+`tick()`. In a `LeafThroughObject`, `lighting.shadows` and
+new values for `deform`'s uniforms apply without a rebuild. `startPage` only applies at creation; use `goTo()`
+after that. The React, Vue and Svelte bindings and the element use `setOptions()`, so
+removing a prop or attribute restores its default. Options are copied on every call, so an
+object or array changed in place and passed again (as Vue's reactive props are) counts as
+a change.
+
+When the browser can't run WebGL, the magazine shows plain pages instead (see
+[Accessibility](#accessibility)); `magazine.plain` tells you so.
+
+## Pages
+
+```ts
+pages: [
+  { src: '/pages/01.jpg', alt: 'Cover: a lighthouse at dusk' },
+  { src: '/pages/02.jpg', alt: 'Contents', text: "Inside this issue.\n\n3: The keeper's year." },
+  '/pages/03.jpg',
+]
+```
+
+- **Sources.** Use images in the page aspect (default 1 : 1.377). 1200–1600 px wide is
+  plenty.
+- **Descriptions.** A page can be `{ src, alt, text }`: `alt` describes it like an image's
+  alt text, and `text` is what's printed on it (blank lines separate paragraphs). Screen
+  readers get both, and changing them doesn't reload anything.
+- **Transparent artwork.** PNG and WebP alpha is composited onto the paper: transparent
+  areas are unprinted paper in `paper.backColor`, including when the reverse side shows
+  through. With `paper.cutout`, they're cut away instead, so a sheet can be any shape: its
+  front page's outline (draw the back page as its mirror image).
+- **Cross-origin URLs.** URLs on another origin need CORS headers, because the images are
+  uploaded to WebGL.
+- **Textures.** A three.js `Texture` you pass in is taken as it is: never disposed, and its
+  `colorSpace`, `premultiplyAlpha` and `anisotropy` are left alone, so one that's on the
+  GPU already, or that your own material uses too, isn't uploaded again. It appears on
+  its sheet synchronously, including after `update({ pages })`. Pages the magazine
+  loads itself are sRGB and premultiplied; for yours to look the same, set `colorSpace` to
+  `THREE.SRGBColorSpace`, and `premultiplyAlpha` to `true` if it has transparent parts (the
+  shader lays it over the paper as premultiplied colour).
+- **Load order.** Pages load nearest the reader first, four at a time, and the order follows
+  the reader as they turn or jump. Pages that haven't arrived show blank paper. Once decoded,
+  the pages in view and next to them go to the GPU at once; the rest go one per frame, or
+  more in idle time, so a dozen arriving together don't drop a frame. `pageload` fires for
+  each as it's on the GPU.
+- **Memory.** Pages within `preload` of the visible ones load; pages more than twice that
+  far away unload, freeing their GPU memory, and load again when the reader comes back.
+  Visible means anything on screen: pages still turning in a quick riffle, and in `single`
+  the read pages rolled up behind the magazine, until they settle under the pile.
+  A texture you pass in yourself stays loaded, since it's yours.
+- **Failures.** A page that fails stays blank paper and is reported through `onError`.
+  `retry()` loads failed pages again, and so does the browser coming back online.
+- **Spread order.** In `spread`, the front cover sits alone on the right, then pages pair up
+  as 1–2, 3–4, and so on. With an odd page count, the last sheet has a blank back.
+
+## Accessibility
+
+The magazine root is focusable (`tabindex="0"`) with `role="region"` and
+`aria-roledescription="magazine"`. A polite live region announces the visible pages. Keys:
+`←` / `→`, `PageUp` / `PageDown`, `Home` and `End`. Rendering pauses while the magazine is
+off screen or the tab is hidden.
+
+The 3D canvas is hidden from screen readers, so give pages an `alt` and their `text` (see
+[Pages](#pages)). The magazine keeps the visible pages' descriptions and text in the page,
+visually hidden, where screen readers can read them; each page is a `figure` named by
+`formatPageLabel`. `LeafThroughObject` has no DOM, so none of this comes with it (see
+[In your own three.js scene](#in-your-own-threejs-scene)).
+
+**Plain view.** `plain: true` shows the pages as flat images, with the same layouts,
+navigation, keyboard and events, and no 3D. Clicking the right half turns forward, the left
+half back, and a swipe turns its way. Offer it as a setting for readers who prefer it. The
+magazine also switches to it by itself when the browser can't run WebGL.
+
+## Development
+
+```bash
+npm install
+npm run dev          # demo playground: a page per binding, each with the dev panel, and a three.js scene
+npm run typecheck
+npm test             # browser tests in headless Chromium (first run: npx playwright install chromium)
+npm run build        # dist/: ESM bundles + type declarations
+npm run build:demo   # static demo site in dist-demo/ (published to GitHub Pages on every push to main)
+LEAFTHROUGH_DIST=1 npx vite   # run the demo against the built dist/ instead of src/
+```
+
+How it works:
+
+- `demo/pages.ts` exports the twelve-page LeafThrough magazine: image URLs with alt text and each page's printed copy.
+  Its final PNGs and consolidated `PROMPTS.md` live in `demo/assets/magazine/`.
+  Pastel photographic collages alternate with editorial copy about pages and motion,
+  with a contents page, running headings, and numbered interior footers. Pages 4–5
+  and 8–9 use softer charcoal paper and ivory pencil marks; light pages and covers
+  retain transparency. Each PNG includes its artwork and text, preserving the original
+  varied collage layouts and proportional sans typography. Running headers and footers
+  use exact shared pixel coordinates, documented in `PROMPTS.md` and `alignment.json`.
+
+- `src/spread` and `src/single` hold each layout's engine (simulation and input) and its
+  sheet shader. `src/plain` holds the plain view's engine.
+- `content.ts` keeps the visible pages' content as DOM: hidden for screen readers in 3D,
+  the pages themselves in the plain view.
+- `textures.ts` loads, prioritises and unloads page textures.
+- `src/paper` holds the shared paper material and the procedural grain. Sheets keep their
+  order by real depth, each lifted by `paper.sheetGap` for the sheets under it, or by a
+  polygon offset (`layerSheet`) where they touch. `deform` wraps the layout's sheet shape
+  in every pass.
+- `LeafThrough.ts` handles the DOM, sizing, loading, layout switching, keyboard and
+  events. `LeafThroughObject.ts` does the same inside someone else's scene, without the DOM.
+- Engines take input through `EngineInput` (`engine.ts`): an element to listen on, a ray
+  for a point on screen, and whether a press lands on the pages. They meet the ray with
+  their own floor plane, so the same code serves the magazine's own camera and any scene's.
+- `navigation.ts` maps pages to engine positions, riffles an animated `goTo()` and binds
+  the keyboard, for both.
+- `test/depth.test.ts` prints the pages that should be hidden pure red and checks that
+  none shows, across layouts, views, paper shapes, turns and camera depth ranges.
+
+## Credits
+
+The page deformation and interaction model are reverse-engineered from the magazine on
+[paper.design/mono](https://paper.design/mono).
+
+## License
+
+[MIT](https://github.com/dmtrbrl/leafthrough/blob/main/LICENSE)

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f9f4ff" />
+  <link rel="icon" type="image/png" href="./assets/logos/mahilab.png" />
+  <title>The Mahi Lab | Interactive Tech Magazine</title>
+  <meta name="description" content="Explore The Mahi Lab's interactive 3D magazine. Learn Linux, DevOps, Cloud, Full Stack, AI, coding, and discover freelancing services." />
+  <style>
+    /* Position the magazine nearer the navbar without changing LeafThrough internals. */
+    @media (max-width: 900px) {
+      .stage { padding-top: calc(var(--header-height) + 4px) !important; }
+      .stage-nav { margin-top: 8px !important; }
+    }
+    .mahi-products { position: relative; z-index: 2; padding: 48px 20px 64px; background: rgba(255,255,255,.45); }
+    .mahi-products-inner { max-width: 1060px; margin: auto; }
+    .mahi-products h2 { text-align: center; font-size: clamp(25px,4vw,36px); margin: 0 0 8px; color: #211c2b; }
+    .mahi-products-intro { text-align: center; color: #6c607d; margin: 0 0 28px; }
+    .mahi-product-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+    .mahi-product-card { display: flex; align-items: center; gap: 18px; padding: 24px; border: 1px solid #e5d9f5; border-radius: 20px; background: #fff; box-shadow: 0 12px 32px rgba(93,59,150,.07); }
+    .mahi-product-logo { flex: none; width: 68px; height: 68px; border-radius: 16px; object-fit: contain; }
+    .mahi-product-card h3 { margin: 0 0 5px; font-size: 20px; color: #211c2b; }
+    .mahi-product-card p { margin: 0; color: #6c607d; font-size: 13px; }
+    .mahi-product-logo-fallback { display: grid; place-items: center; background: #eee5ff; color: #7147bd; font-size: 32px; font-weight: 800; }
+    .mahi-product-logo-fallback.askbun { background: #080808; color: #fff; }
+    @media (max-width: 600px) {
+      .mahi-products { padding: 32px 16px 48px; }
+      .mahi-product-grid { grid-template-columns: 1fr; gap: 14px; }
+      .mahi-product-card { padding: 18px; }
+      .mahi-product-logo { width: 56px; height: 56px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ========================================== MAHI LAB HEADER ========================================== -->
+  <header id="home">
+    <a class="brand" href="#home" data-target-page="0" aria-label="The Mahi Lab - Back to home">
+      <img src="./assets/logos/mahilab.png" alt="The Mahi Lab logo" />
+      <div class="brand-copy">
+        <strong class="brand-name">Mahi Lab</strong>
+        <small class="brand-hint">Select an option to view its page</small>
+      </div>
+    </a>
+    <!-- MAGAZINE NAVIGATION: unchanged -->
+    <nav aria-label="The Mahi Lab magazine sections">
+      <a href="#home" data-target-page="0" aria-current="page">Home</a>
+      <a href="#topics" data-target-page="3">Topics</a>
+      <a href="#services" data-target-page="4">Freelancing Services</a>
+      <a href="#learning" data-target-page="2">How to Learn</a>
+      <a href="#cloud" data-target-page="8">Cloud &amp; Tools</a>
+      <a href="#posts" data-target-page="1">Latest Posts</a>
+      <a href="#follow" data-target-page="11">Follow Us</a>
+    </nav>
+  </header>
+
+  <!-- INTERACTIVE 3D MAGAZINE: unchanged -->
+  <div class="workspace">
+    <main class="stage" id="stage" aria-label="The Mahi Lab interactive magazine">
+      <div class="reader-mount" id="reader-mount"></div>
+    </main>
+    <aside class="panel" id="panel" aria-label="Reader settings"></aside>
+  </div>
+
+  <!-- NEW: OUR PRODUCTS, below magazine and above footer -->
+  <section class="mahi-products" id="products" aria-labelledby="products-heading">
+    <div class="mahi-products-inner">
+      <h2 id="products-heading">Our Products</h2>
+      <p class="mahi-products-intro">Tools made to help you learn and grow.</p>
+      <div class="mahi-product-grid">
+        <article class="mahi-product-card">
+          <div class="mahi-product-logo mahi-product-logo-fallback" aria-hidden="true">G</div>
+          <div><h3>Ginger Drafts</h3><p>Free resume builder with professional templates.</p></div>
+        </article>
+        <article class="mahi-product-card">
+          <div class="mahi-product-logo mahi-product-logo-fallback askbun" aria-hidden="true">A</div>
+          <div><h3>Ask Bun</h3><p>Interview questions, answers, and coding practice.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAHI LAB FOOTER: unchanged -->
+  <footer class="mahi-footer">
+    <div class="mahi-footer-inner">
+      <div class="mahi-footer-brand">
+        <img src="./assets/logos/mahilab.png" alt="The Mahi Lab logo" />
+        <div><h3>The Mahi Lab</h3><p>Technology Made Simple.</p></div>
+      </div>
+      <p class="mahi-footer-description">Learn. Build. Grow.
+        <span>Telugu Tech Tutorials &amp; Freelancing Services.</span>
+      </p>
+      <div class="mahi-footer-links">
+        <a href="https://www.instagram.com/themahilab.in/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+        <a href="#home">Back to Top ↑</a>
+      </div>
+    </div>
+    <div class="mahi-footer-bottom">
+      <span>© 2026 The Mahi Lab. All rights reserved.</span>
+      <span>Built by Usman Shaik</span>
+    </div>
+  </footer>
+  <!-- LEAFTHROUGH SCRIPT: unchanged -->
+  <script type="module" src="./main-element.ts"></script>
+</body>
+</html>
