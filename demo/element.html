@@ -1,342 +1,1212 @@
+
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#f9f4ff" />
-  <link rel="icon" type="image/png" href="./assets/logos/mahilab.png" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+
+  <meta
+    name="theme-color"
+    content="#f9f4ff"
+  />
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="./assets/logos/mahilab.png"
+  />
+
   <title>Mahi Lab</title>
-  <meta name="description" content="Explore The Mahi Lab's interactive 3D magazine. Learn Linux, DevOps, Cloud, Full Stack, AI, coding, and discover freelancing services." />
 
-  <!-- Apply saved theme before Vite renders to prevent a white flash. -->
-  <script>
-    try {
-      document.documentElement.dataset.theme =
-        localStorage.getItem('mahilab-theme') === 'dark' ? 'dark' : 'light';
-    } catch {
-      document.documentElement.dataset.theme = 'light';
-    }
-  </script>
+  <meta
+    name="description"
+    content="Explore The Mahi Lab's interactive 3D magazine. Learn Linux, DevOps, Cloud, Full Stack, AI, coding, and discover freelancing services."
+  />
 
-  <!-- Dark-theme overrides. Leave your existing demo/style.css unchanged. -->
+  <!-- ==========================================
+       ADDITIONAL PAGE STYLES
+       Existing style.css remains unchanged
+       ========================================== -->
+
   <style>
-    /* The switch stays at the top-right, opposite the logo. */
-    .theme-toggle {
-      position: absolute;
-      z-index: 30;
-      top: 50%;
-      right: calc(16px + var(--safe-right, 0px));
-      transform: translateY(-50%);
-      display: grid;
-      place-items: center;
-      width: 46px;
-      height: 46px;
-      padding: 0;
-      border: 1px solid #c9c1db;
-      border-radius: 50%;
-      background: #fff;
-      color: #211c2b;
-      cursor: pointer;
-      transition: transform .2s ease, background .2s ease;
-    }
-    .theme-toggle:hover { transform: translateY(-50%) scale(1.06); }
-    .theme-toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
-    .theme-icon { width: 22px; height: 22px; }
-    .theme-icon-sun { display: none; }
-    @media (min-width: 901px) {
-      header { padding-right: calc(84px + var(--safe-right, 0px)); }
-    }
+
+    /* ==========================================
+       MAGAZINE POSITION ADJUSTMENT
+       ========================================== */
+
     @media (max-width: 900px) {
-      .theme-toggle {
-        top: 13px;
-        right: calc(12px + var(--safe-right, 0px));
-        transform: none;
-        width: 42px;
-        height: 42px;
+
+      .stage {
+        padding-top:
+          calc(var(--header-height) + 4px) !important;
       }
-      .theme-toggle:hover { transform: scale(1.06); }
-      header .brand { max-width: calc(100% - 54px); }
+
+      .stage-nav {
+        margin-top: 8px !important;
+      }
+
     }
 
-    /* TRUE BLACK MODE: black backgrounds, white text, gray outlines. */
-    html[data-theme="dark"] {
-      color-scheme: dark;
-      --paper: #000;
-      --paper-deep: #000;
-      --surface: #0b0b0b;
-      --ink: #f5f5f5;
-      --muted: #bababa;
-      --line: #353535;
-      --charcoal: #242424;
-      --charcoal-dark: #383838;
-      --accent: #fff;
-      --glass: #090909;
-      --glass-hover: #161616;
-      --glass-current: #111;
-      --mahi-gradient: linear-gradient(#242424, #242424);
-    }
-    html[data-theme="dark"],
-    html[data-theme="dark"] body {
-      background: #000 !important;
-      background-image: none !important;
-      color: #f5f5f5 !important;
-    }
-    html[data-theme="dark"] header,
-    html[data-theme="dark"] .workspace,
-    html[data-theme="dark"] .stage,
-    html[data-theme="dark"] .reader-mount,
-    html[data-theme="dark"] .mahi-footer {
-      background: #000 !important;
-      background-image: none !important;
-      box-shadow: none !important;
-    }
-    html[data-theme="dark"] header {
-      border-bottom: 1px solid #252525 !important;
-    }
-    html[data-theme="dark"] .stage::before {
-      display: none !important;
-      background: none !important;
-    }
-    html[data-theme="dark"] .magazine {
-      filter: drop-shadow(0 18px 25px rgba(0, 0, 0, .75)) !important;
-    }
-    html[data-theme="dark"] .brand,
-    html[data-theme="dark"] .brand-name,
-    html[data-theme="dark"] .mahi-footer-brand h3,
-    html[data-theme="dark"] .mahi-footer-description {
-      color: #fff !important;
-      text-shadow: none !important;
-    }
-    html[data-theme="dark"] .brand-hint,
-    html[data-theme="dark"] .mahi-footer-brand p,
-    html[data-theme="dark"] .mahi-footer-description span,
-    html[data-theme="dark"] .mahi-footer-bottom {
-      color: #bcbcbc !important;
-    }
-    /* Monochrome logos in dark mode; magazine artwork stays unchanged. */
-    html[data-theme="dark"] .brand img,
-    html[data-theme="dark"] .mahi-footer-brand img {
-      filter: grayscale(1) !important;
-    }
-    html[data-theme="dark"] nav a,
-    html[data-theme="dark"] nav a:hover {
-      color: #fff !important;
-      background: #090909 !important;
-      background-image: none !important;
-      border: 2px solid #343434 !important;
-      box-shadow: none !important;
-    }
-    html[data-theme="dark"] nav a:hover {
-      border-color: #8c8c8c !important;
-    }
-    html[data-theme="dark"] nav a[aria-current="page"],
-    html[data-theme="dark"] nav a[aria-current="page"]:hover {
-      color: #fff !important;
-      background: #050505 !important;
-      background-image: none !important;
-      border: 2px solid #fff !important;
-      box-shadow: none !important;
-    }
-    html[data-theme="dark"] nav a::after { color: #aaa !important; }
-    html[data-theme="dark"] .theme-toggle {
-      color: #fff !important;
-      background: #080808 !important;
-      border-color: #777 !important;
-      box-shadow: none !important;
-    }
-    html[data-theme="dark"] .theme-icon-moon { display: none; }
-    html[data-theme="dark"] .theme-icon-sun { display: block; }
+    /* ==========================================
+       OUR PRODUCTS SECTION
+       ========================================== */
 
-    html[data-theme="dark"] .stage-arrow,
-    html[data-theme="dark"] .stage-arrow:hover:not(:disabled),
-    html[data-theme="dark"] .github,
-    html[data-theme="dark"] .settings-toggle,
-    html[data-theme="dark"] .code-toggle,
-    html[data-theme="dark"] .mahi-footer-links a,
-    html[data-theme="dark"] .mahi-footer-links a:hover {
-      color: #f5f5f5 !important;
-      background: #101010 !important;
-      background-image: none !important;
-      border-color: #484848 !important;
-      box-shadow: none !important;
-    }
-    html[data-theme="dark"] .page-indicator,
-    html[data-theme="dark"] .stage-guide-primary,
-    html[data-theme="dark"] .panel-intro h2,
-    html[data-theme="dark"] .dev-panel dd,
-    html[data-theme="dark"] .dev-panel > details > summary {
-      color: #f5f5f5 !important;
-    }
-    html[data-theme="dark"] .stage-guide,
-    html[data-theme="dark"] .panel,
-    html[data-theme="dark"] .settings-open .panel,
-    html[data-theme="dark"] .code-dialog,
-    html[data-theme="dark"] .code-dialog pre,
-    html[data-theme="dark"] .dev-panel pre {
-      color: #eee !important;
-      background: #0a0a0a !important;
-      background-image: none !important;
-      border-color: #353535 !important;
-      box-shadow: none !important;
-    }
-    html[data-theme="dark"] .stage-guide-secondary,
-    html[data-theme="dark"] .stage-guide .stage-guide-secondary,
-    html[data-theme="dark"] .panel-intro p,
-    html[data-theme="dark"] .dev-panel .name,
-    html[data-theme="dark"] .dev-panel dt,
-    html[data-theme="dark"] .dev-panel output {
-      color: #bbb !important;
-    }
-    html[data-theme="dark"] .dev-panel .field input,
-    html[data-theme="dark"] .dev-panel .field select,
-    html[data-theme="dark"] .dev-panel .goto input,
-    html[data-theme="dark"] .dev-panel button:not(.reset),
-    html[data-theme="dark"] .copy-code {
-      color: #fff !important;
-      background: #171717 !important;
-      background-image: none !important;
-      border-color: #555 !important;
-      box-shadow: none !important;
-      accent-color: #fff !important;
-    }
-    html[data-theme="dark"] .mahi-footer {
-      border-top: 1px solid #292929 !important;
-    }
-    html[data-theme="dark"] .mahi-footer-bottom {
-      border-top-color: #292929 !important;
+    .mahi-products {
+      position: relative;
+      z-index: 2;
+
+      width: 100%;
+
+      padding: 56px 20px 70px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.80),
+          rgba(244, 235, 255, 0.65)
+        );
     }
 
-    /* Circular reveal expands from the theme toggle. */
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-      animation: none !important;
-      mix-blend-mode: normal;
+    .mahi-products-inner {
+      max-width: 1100px;
+      margin: 0 auto;
     }
-    ::view-transition-old(root) { z-index: 1; }
-    ::view-transition-new(root) { z-index: 2; }
+
+    /* ==========================================
+       PRODUCTS HEADING
+       ========================================== */
+
+    .mahi-products-heading {
+      text-align: center;
+      margin-bottom: 34px;
+    }
+
+    .mahi-products h2 {
+      margin: 0 0 10px;
+
+      color: #211c2b;
+
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 750;
+      line-height: 1.2;
+    }
+
+    .mahi-products-intro {
+      margin: 0;
+
+      color: #6c607d;
+
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    /* ==========================================
+       PRODUCTS GRID
+       ========================================== */
+
+    .mahi-product-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 22px;
+
+      width: 100%;
+    }
+
+    /* ==========================================
+       PRODUCT CARD
+       ========================================== */
+
+    .mahi-product-card {
+      display: flex;
+      align-items: center;
+
+      gap: 20px;
+
+      min-width: 0;
+      padding: 26px;
+
+      background: #ffffff;
+
+      border: 1px solid #e5d9f5;
+      border-radius: 20px;
+
+      box-shadow:
+        0 12px 32px rgba(93, 59, 150, 0.07);
+
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+    }
+
+    .mahi-product-card:hover {
+      transform: translateY(-5px);
+
+      border-color: #bfa7ee;
+
+      box-shadow:
+        0 18px 42px rgba(93, 59, 150, 0.12);
+    }
+
+    /* ==========================================
+       PRODUCT LOGOS
+       ========================================== */
+
+    .mahi-product-logo {
+      width: 72px;
+      height: 72px;
+
+      flex-shrink: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 17px;
+
+      object-fit: contain;
+    }
+
+    .mahi-product-logo-fallback {
+      background: #eee5ff;
+
+      color: #7147bd;
+
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .mahi-product-logo-fallback.askbun {
+      background: #080808;
+      color: #ffffff;
+    }
+
+    /* ==========================================
+       PRODUCT CONTENT
+       ========================================== */
+
+    .mahi-product-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .mahi-product-card h3 {
+      margin: 0 0 7px;
+
+      color: #211c2b;
+
+      font-size: 21px;
+      font-weight: 750;
+      line-height: 1.3;
+    }
+
+    .mahi-product-card p {
+      margin: 0;
+
+      color: #6c607d;
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* ==========================================
+       TABLET RESPONSIVE
+       ========================================== */
+
+    @media (max-width: 900px) {
+
+      .mahi-products {
+        padding: 45px 20px 60px;
+      }
+
+      .mahi-product-grid {
+        gap: 16px;
+      }
+
+      .mahi-product-card {
+        gap: 14px;
+        padding: 20px;
+      }
+
+      .mahi-product-logo {
+        width: 60px;
+        height: 60px;
+      }
+
+      .mahi-product-card h3 {
+        font-size: 18px;
+      }
+
+    }
+
+    /* ==========================================
+       MOBILE RESPONSIVE
+       ========================================== */
+
+    @media (max-width: 600px) {
+
+      .mahi-products {
+        padding: 36px 16px 52px;
+      }
+
+      .mahi-products-heading {
+        margin-bottom: 25px;
+      }
+
+      .mahi-products h2 {
+        font-size: 27px;
+      }
+
+      .mahi-products-intro {
+        font-size: 12px;
+      }
+
+      .mahi-product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .mahi-product-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px;
+        gap: 10px;
+        border-radius: 16px;
+      }
+
+      .mahi-product-logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+      }
+
+      .mahi-product-logo-fallback {
+        font-size: 26px;
+      }
+
+      .mahi-product-card h3 {
+        font-size: 15px;
+      }
+
+      .mahi-product-card p {
+        font-size: 11px;
+      }
+
+    }
+
+    /* Product cards are fully clickable links */
+    .mahi-product-link {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .mahi-product-link:visited {
+      color: inherit;
+    }
+
+    .mahi-product-link:focus-visible {
+      outline: 3px solid #8f4fff;
+      outline-offset: 4px;
+    }
+
+    /* ==========================================
+       REDUCED MOTION
+       ========================================== */
+
     @media (prefers-reduced-motion: reduce) {
-      .theme-toggle { transition: none; }
+
+      .mahi-product-card {
+        transition: none;
+      }
+
+      .mahi-product-card:hover {
+        transform: none;
+      }
+
     }
+
+
+    /* ==========================================
+       MOBILE SPACING & FOOTER ALIGNMENT FIX
+       Keeps the book and product cards unchanged.
+       ========================================== */
+    @media (max-width: 600px) {
+      /* Room for the page counter / arrow buttons before Our Products. */
+      body .mahi-products {
+        margin-top: 38px !important;
+        padding-top: 38px !important;
+      }
+
+      /* A centered brand block: logo, heading, then description. */
+      body .mahi-footer {
+        padding: 34px 18px 24px !important;
+      }
+      body .mahi-footer-inner {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 22px !important;
+        text-align: center !important;
+        width: 100%;
+      }
+      body .mahi-footer-brand {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 12px !important;
+        width: 100%;
+        max-width: 340px;
+        margin: 0 auto;
+      }
+      body .mahi-footer-brand img {
+        width: 58px !important;
+        height: 58px !important;
+        flex-shrink: 0;
+        object-fit: contain;
+      }
+      body .mahi-footer-brand > div {
+        width: 100%;
+        min-width: 0;
+        text-align: center;
+      }
+      body .mahi-footer-brand h3 {
+        margin: 0 0 10px !important;
+        font-size: 18px !important;
+        line-height: 1.3;
+      }
+      body .mahi-footer-brand p {
+        margin: 0 auto !important;
+        max-width: 310px;
+        font-size: 12px !important;
+        line-height: 1.75 !important;
+        text-align: center;
+      }
+      /* Consistent 2-by-2 social links, no awkward wrapping. */
+      body .mahi-footer-links {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 12px !important;
+        width: min(100%, 340px) !important;
+        margin: 0 auto;
+      }
+      body .mahi-footer-links a {
+        display: flex !important;
+        width: 100%;
+        min-width: 0;
+        min-height: 43px;
+        padding: 10px 8px !important;
+        font-size: 11px !important;
+        white-space: nowrap;
+        text-align: center;
+      }
+      body .mahi-footer-bottom {
+        margin-top: 25px !important;
+        padding-top: 18px !important;
+        gap: 8px !important;
+        line-height: 1.5;
+      }
+    }
+
+    @media (max-width: 360px) {
+      body .mahi-footer-links { gap: 8px !important; }
+      body .mahi-footer-links a { font-size: 10px !important; padding-inline: 5px !important; }
+    }
+
+
+    /* Navigation icons — inline SVG, no icon package or CDN needed */
+    header nav a[data-target-page] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    header nav .mahi-nav-icon {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 15px;
+      display: block;
+    }
+    header nav .mahi-nav-label { display: inline-block; }
+    @media (max-width: 600px) {
+      header nav a[data-target-page] { gap: 4px; padding-inline: 4px; }
+      header nav .mahi-nav-icon { width: 12px; height: 12px; flex-basis: 12px; }
+    }
+    @media (max-width: 360px) {
+      header nav a[data-target-page] { gap: 3px; padding-inline: 2px; }
+      header nav .mahi-nav-icon { width: 11px; height: 11px; flex-basis: 11px; }
+    }
+
+    /* NAVBAR: colorful selected label and gentle button-like zoom, no active ring */
+    header nav a[data-target-page] {
+      transform-origin: center;
+      transition: transform .22s ease, background-color .22s ease, box-shadow .22s ease !important;
+    }
+    header nav a[data-target-page][aria-current="page"],
+    header nav a[data-target-page].active,
+    header nav a[data-target-page].is-active {
+      color: #8f4fff !important;
+      border-color: transparent !important;
+      outline: none !important;
+      box-shadow: 0 5px 16px rgba(143,79,255,.14) !important;
+      background: #fff !important;
+      transform: scale(1.045);
+    }
+    header nav a[data-target-page][aria-current="page"] .mahi-nav-label,
+    header nav a[data-target-page].active .mahi-nav-label,
+    header nav a[data-target-page].is-active .mahi-nav-label {
+      background: linear-gradient(110deg,#445cff 0%,#8f4fff 55%,#ff4fb8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header nav a[data-target-page][aria-current="page"] .mahi-nav-icon,
+    header nav a[data-target-page].active .mahi-nav-icon,
+    header nav a[data-target-page].is-active .mahi-nav-icon { color: #8f4fff; }
+    header nav a[data-target-page][aria-current="page"]::before,
+    header nav a[data-target-page][aria-current="page"]::after,
+    header nav a[data-target-page].active::before,
+    header nav a[data-target-page].active::after,
+    header nav a[data-target-page].is-active::before,
+    header nav a[data-target-page].is-active::after { border: none !important; opacity: 0 !important; }
+    @media (hover:hover) {
+      header nav a[data-target-page]:hover { transform: scale(1.055); }
+    }
+    header nav a[data-target-page]:active { transform: scale(.98); }
+    header nav a[data-target-page]:focus-visible { outline: 2px solid #8f4fff !important; outline-offset: 2px !important; }
+
+    /* FOOTER: colorful social icons and properly aligned labels */
+    body .mahi-footer-links a.mahi-social {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 7px !important;
+      text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .mahi-social-icon { width: 17px; height: 17px; flex: 0 0 17px; display: block; }
+    .mahi-social-instagram .mahi-social-icon { color: #e44080; }
+    .mahi-social-threads .mahi-social-icon { color: #161616; }
+    .mahi-social-whatsapp .mahi-social-icon { color: #18b96b; }
+    .mahi-social-backtop .mahi-social-icon { color: #8f4fff; }
+    @media (hover:hover) { body .mahi-footer-links a.mahi-social:hover { transform: translateY(-2px); } }
+    @media (max-width: 360px) {
+      body .mahi-footer-links a.mahi-social { gap: 4px !important; }
+      .mahi-social-icon { width: 14px; height: 14px; flex-basis: 14px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      header nav a[data-target-page], body .mahi-footer-links a.mahi-social { transition: none !important; }
+    }
+  
+    /* Slightly larger Mahi Lab logos — navbar and footer */
+    header .brand > img {
+      width: 58px !important;
+      height: 58px !important;
+      max-width: none;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    body .mahi-footer-brand > img {
+      width: 76px !important;
+      height: 76px !important;
+      max-width: none;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    @media (max-width: 600px) {
+      header .brand > img {
+        width: 48px !important;
+        height: 48px !important;
+      }
+      body .mahi-footer-brand > img {
+        width: 68px !important;
+        height: 68px !important;
+      }
+    }
+
+    /* Subtle charcoal divider under the complete navbar/header */
+    body > header#home {
+      border-bottom: 1px solid rgba(30, 27, 36, 0.24) !important;
+      box-shadow: 0 1px 0 rgba(30, 27, 36, 0.035);
+    }
+
+    /* Selected navbar item: slightly larger gradient text, no outline ring */
+    header nav a[data-target-page][aria-current="page"],
+    header nav a[data-target-page].active,
+    header nav a[data-target-page].is-active {
+      transform: scale(1.075);
+      border: 1px solid transparent !important;
+    }
+    header nav a[data-target-page][aria-current="page"] .mahi-nav-label,
+    header nav a[data-target-page].active .mahi-nav-label,
+    header nav a[data-target-page].is-active .mahi-nav-label {
+      font-size: 1.07em !important;
+      font-weight: 750 !important;
+    }
+    @media (max-width: 600px) {
+      header nav a[data-target-page][aria-current="page"],
+      header nav a[data-target-page].active,
+      header nav a[data-target-page].is-active {
+        transform: scale(1.045);
+      }
+      header nav a[data-target-page][aria-current="page"] .mahi-nav-label,
+      header nav a[data-target-page].active .mahi-nav-label,
+      header nav a[data-target-page].is-active .mahi-nav-label {
+        font-size: 1.04em !important;
+      }
+    }
+
+
+    /* Slim, inset black divider below navbar — no heavy shadow */
+    html body > header#home {
+      border-bottom: 0 !important;
+      box-shadow: none !important;
+      position: relative;
+    }
+    html body > header#home::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 5%;
+      right: 5%;
+      height: 1px;
+      background: #171717;
+      pointer-events: none;
+      z-index: 20;
+    }
+    /* Bring the magazine slightly closer to the navbar on small screens. */
+    @media (max-width: 900px) {
+      .stage { padding-top: calc(var(--header-height) - 12px) !important; }
+    }
+
+    /* FIX: Remove oversized blank space between mobile navbar and magazine.
+       The header already occupies its own layout height, so adding
+       --header-height again to the stage creates a second empty gap. */
+    @media (max-width: 900px) {
+      html body .workspace .stage {
+        padding-top: 12px !important;
+      }
+    }
+    @media (max-width: 600px) {
+      html body .workspace .stage {
+        padding-top: 8px !important;
+      }
+    }
+
+    /* MOBILE SPACING FIX: the fixed-height workspace was leaving large
+       empty areas above the book and after the page controls. */
+    @media (max-width: 600px) {
+      html body .workspace {
+        height: 650px !important;
+        min-height: 650px !important;
+        max-height: 650px !important;
+      }
+      html body .workspace .stage {
+        padding-top: 0 !important;
+      }
+      html body .mahi-products {
+        margin-top: 0 !important;
+        padding-top: 24px !important;
+      }
+    }
+    @media (min-width: 601px) and (max-width: 900px) {
+      html body .workspace {
+        height: 720px !important;
+        min-height: 720px !important;
+      }
+      html body .workspace .stage { padding-top: 0 !important; }
+    }
+    /* Mobile navbar brand: slightly larger logo and readable copy */
+    @media (max-width: 600px) {
+      header .brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        min-width: 0;
+      }
+      header .brand > img {
+        width: 54px !important;
+        height: 54px !important;
+        flex: 0 0 54px;
+      }
+      header .brand .brand-copy {
+        min-width: 0;
+      }
+      header .brand .brand-name {
+        display: block;
+        font-size: 18px !important;
+        line-height: 1.2 !important;
+      }
+      header .brand .brand-hint {
+        display: block;
+        font-size: 12px !important;
+        line-height: 1.4 !important;
+        white-space: normal;
+        overflow-wrap: break-word;
+      }
+    }
+    @media (max-width: 360px) {
+      header .brand { gap: 7px; }
+      header .brand > img {
+        width: 50px !important;
+        height: 50px !important;
+        flex-basis: 50px;
+      }
+      header .brand .brand-name { font-size: 17px !important; }
+      header .brand .brand-hint { font-size: 11px !important; }
+    }
+
+
+    /* Shift only the interactive magazine slightly to the right on mobile. */
+    @media (max-width: 600px) {
+      html body .workspace .reader-mount {
+        transform: translateX(10px);
+      }
+    }
+
+  
+    /* Navbar click: quick magnification, then return to the active size. */
+    header nav a[data-target-page].mahi-nav-pop {
+      animation: mahiNavPop 420ms cubic-bezier(.2,.75,.25,1) both !important;
+    }
+    @keyframes mahiNavPop {
+      0% { transform: scale(1.045); }
+      42% { transform: scale(1.20); }
+      72% { transform: scale(1.01); }
+      100% { transform: scale(1.075); }
+    }
+    @media (max-width: 600px) {
+      @keyframes mahiNavPop {
+        0% { transform: scale(1.025); }
+        42% { transform: scale(1.13); }
+        72% { transform: scale(1); }
+        100% { transform: scale(1.045); }
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      header nav a[data-target-page].mahi-nav-pop { animation: none !important; }
+    }
+
+
+    /* ==========================================================
+       PREMIUM 3D LETTER-BY-LETTER BUBBLE WAVE
+       Each letter grows independently with elastic squash & stretch.
+       ========================================================== */
+    header nav a[data-target-page] {
+      perspective: 500px;
+      isolation: isolate;
+      overflow: visible;
+    }
+    header nav a[data-target-page] .mahi-nav-label {
+      display: inline-flex;
+      align-items: baseline;
+      white-space: pre;
+      overflow: visible;
+      transform-style: preserve-3d;
+      -webkit-text-fill-color: initial;
+      background: none;
+    }
+    header nav a[data-target-page] .mahi-nav-letter {
+      position: relative;
+      display: inline-block;
+      flex: 0 0 auto;
+      transform-origin: 50% 85%;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Gradient on each glyph rather than the parent so it survives scaling. */
+    header nav a[data-target-page][aria-current="page"] .mahi-nav-letter,
+    header nav a[data-target-page].active .mahi-nav-letter,
+    header nav a[data-target-page].is-active .mahi-nav-letter {
+      background: linear-gradient(135deg, #4258ff, #9b4bfa 55%, #ff4db4);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header nav a[data-target-page].mahi-nav-bubble .mahi-nav-letter:not(.mahi-nav-space) {
+      animation: mahiMegaLetterBubble 1050ms cubic-bezier(.22,.8,.18,1) both !important;
+      animation-delay: calc(var(--letter-index) * 65ms) !important;
+      z-index: 2;
+    }
+    @keyframes mahiMegaLetterBubble {
+      0%   { transform: translate3d(0,0,0) rotateX(0) scale3d(1,1,1); filter: brightness(1) drop-shadow(0 0 0 transparent); }
+      14%  { transform: translate3d(0,3px,5px) rotateX(-12deg) scale3d(1.32,.70,1); }
+      31%  { transform: translate3d(0,-10px,32px) rotateX(16deg) scale3d(1.85,1.65,1); filter: brightness(1.32) drop-shadow(0 9px 7px rgba(119,68,223,.35)); }
+      45%  { transform: translate3d(0,-17px,48px) rotateX(-9deg) scale3d(2.15,2.10,1); filter: brightness(1.55) drop-shadow(0 14px 10px rgba(120,68,223,.42)); }
+      59%  { transform: translate3d(0,-6px,20px) rotateX(10deg) scale3d(.80,1.32,1); filter: brightness(1.18) drop-shadow(0 6px 5px rgba(120,68,223,.22)); }
+      72%  { transform: translate3d(0,3px,7px) rotateX(-5deg) scale3d(1.25,.78,1); }
+      84%  { transform: translate3d(0,-4px,5px) scale3d(.94,1.14,1); }
+      93%  { transform: translate3d(0,1px,1px) scale3d(1.05,.96,1); }
+      100% { transform: translate3d(0,0,0) rotateX(0) scale3d(1,1,1); filter: brightness(1) drop-shadow(0 0 0 transparent); }
+    }
+    header nav a[data-target-page].mahi-nav-bubble .mahi-nav-icon {
+      animation: mahiMegaIconBubble 760ms cubic-bezier(.22,.8,.18,1) both !important;
+    }
+    @keyframes mahiMegaIconBubble {
+      0%,100% { transform: translateY(0) rotate(0) scale(1); filter: none; }
+      35% { transform: translateY(-9px) rotate(-13deg) scale(1.65); filter: drop-shadow(0 7px 6px rgba(119,68,223,.35)); }
+      62% { transform: translateY(3px) rotate(7deg) scale(.85); }
+      82% { transform: translateY(-2px) rotate(-3deg) scale(1.12); }
+    }
+    /* Soft flash behind the selected navigation button. */
+    header nav a[data-target-page].mahi-nav-bubble::before {
+      content: "" !important;
+      position: absolute;
+      inset: -5px -7px;
+      pointer-events: none;
+      border-radius: 999px;
+      border: none !important;
+      background: radial-gradient(ellipse at 40% 25%, rgba(255,255,255,.98), rgba(194,147,255,.4) 45%, rgba(144,79,255,.04) 78%);
+      animation: mahiMegaBubbleHalo 850ms ease-out both !important;
+    }
+    @keyframes mahiMegaBubbleHalo {
+      0%,100% { opacity: 0; transform: scale(.72); }
+      36% { opacity: .95; transform: scale(1.10); }
+      65% { opacity: .35; transform: scale(1.2); }
+    }
+    /* Important: existing active-link transform !important would block the pop. */
+    header nav a[data-target-page].mahi-nav-pop {
+      animation: mahiNavPop 420ms cubic-bezier(.2,.75,.25,1) both !important;
+      transform: none !important;
+    }
+    @media (max-width: 600px) {
+      header nav a[data-target-page].mahi-nav-bubble .mahi-nav-letter:not(.mahi-nav-space) {
+        animation-name: mahiMegaLetterBubbleMobile !important;
+        animation-delay: calc(var(--letter-index) * 58ms) !important;
+      }
+      @keyframes mahiMegaLetterBubbleMobile {
+        0%,100% { transform: translate3d(0,0,0) scale(1); filter: brightness(1); }
+        18% { transform: translateY(2px) scale(1.22,.78); }
+        42% { transform: translate3d(0,-9px,25px) scale(1.7,1.85); filter: brightness(1.45) drop-shadow(0 7px 5px rgba(119,68,223,.3)); }
+        65% { transform: translateY(2px) scale(.85,1.2); }
+        83% { transform: translateY(-2px) scale(1.1,.94); }
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      header nav a[data-target-page].mahi-nav-bubble .mahi-nav-letter,
+      header nav a[data-target-page].mahi-nav-bubble .mahi-nav-icon,
+      header nav a[data-target-page].mahi-nav-bubble::before { animation: none !important; }
+    }
+
   </style>
+
 </head>
+
 <body>
+
+  <!-- ==========================================
+       THE MAHI LAB HEADER
+       ========================================== -->
+
   <header id="home">
-    <a class="brand" href="#home" data-target-page="0" aria-label="The Mahi Lab - Back to home">
-      <img src="./assets/logos/mahilab.png" alt="The Mahi Lab logo" />
+
+    <!-- ==========================================
+         LOGO AND BRAND
+         ========================================== -->
+
+    <a
+      class="brand"
+      href="#home"
+      data-target-page="0"
+      aria-label="The Mahi Lab - Back to home"
+    >
+
+      <img
+        src="./assets/logos/mahilab.png"
+        alt="The Mahi Lab logo"
+      />
+
       <div class="brand-copy">
-        <strong class="brand-name">Mahi Lab</strong>
-        <small class="brand-hint">Select an option to view its page</small>
+
+        <strong class="brand-name">
+          Mahi Lab
+        </strong>
+
+        <small class="brand-hint">
+          Select an option to view its page
+        </small>
+
       </div>
+
     </a>
 
+    <!-- ==========================================
+         MAGAZINE PAGE NAVIGATION
+         ========================================== -->
+
     <nav aria-label="The Mahi Lab magazine sections">
-      <a href="#home" data-target-page="0" aria-current="page">Home</a>
-      <a href="#topics" data-target-page="3">Topics</a>
-      <a href="#services" data-target-page="4">Freelancing Services</a>
-      <a href="#learning" data-target-page="2">How to Learn</a>
-      <a href="#cloud" data-target-page="8">Cloud &amp; Tools</a>
-      <a href="#posts" data-target-page="1">Latest Posts</a>
-      <a href="#follow" data-target-page="11">Follow Us</a>
+
+      <!-- HOME -->
+
+      <a
+        href="#home"
+        data-target-page="0"
+        aria-current="page"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v12h14V9"/><path d="M9 21v-7h6v7"/></svg><span class="mahi-nav-label">Home</span>
+      </a>
+
+      <!-- TOPICS -->
+
+      <a
+        href="#topics"
+        data-target-page="3"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg><span class="mahi-nav-label">Topics</span>
+      </a>
+
+      <!-- FREELANCING SERVICES -->
+
+      <a
+        href="#services"
+        data-target-page="4"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12a18 18 0 0 0 18 0M12 12v3"/></svg><span class="mahi-nav-label">Freelancing Services</span>
+      </a>
+
+      <!-- HOW TO LEARN -->
+
+      <a
+        href="#learning"
+        data-target-page="2"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-5 9 5-9 5-9-5Z"/><path d="M7 11v5c3 3 7 3 10 0v-5M21 9v7"/></svg><span class="mahi-nav-label">How to Learn</span>
+      </a>
+
+      <!-- CLOUD AND TOOLS -->
+
+      <a
+        href="#cloud"
+        data-target-page="8"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4 4 0 0 1-.6-7.95A6 6 0 0 1 18 9a4.5 4.5 0 0 1 0 9H7Z"/><path d="m10 13 2 2 3-4"/></svg><span class="mahi-nav-label">Cloud &amp; Tools</span>
+      </a>
+
+      <!-- LATEST POSTS -->
+
+      <a
+        href="#posts"
+        data-target-page="1"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg><span class="mahi-nav-label">Latest Posts</span>
+      </a>
+
+      <!-- FOLLOW US -->
+
+      <a
+        href="#follow"
+        data-target-page="11"
+      >
+        <svg class="mahi-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a3 3 0 1 0-2.8-4"/><path d="M6 8a3 3 0 1 0 0-6"/><path d="M3 20v-2a5 5 0 0 1 10 0v2M15 14a4 4 0 0 1 6 4v2"/><circle cx="8" cy="9" r="3"/></svg><span class="mahi-nav-label">Follow Us</span>
+      </a>
+
     </nav>
 
-    <button id="theme-toggle" class="theme-toggle" type="button"
-      aria-label="Switch to dark theme" aria-pressed="false" title="Switch to dark theme">
-      <svg class="theme-icon theme-icon-moon" xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M20.985 12.486A9 9 0 0 1 11.514 3.015 9 9 0 1 0 20.985 12.486Z" />
-      </svg>
-      <svg class="theme-icon theme-icon-sun" xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="4" />
-        <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
-      </svg>
-    </button>
   </header>
 
+  <!-- ==========================================
+       INTERACTIVE 3D MAGAZINE WORKSPACE
+       ========================================== -->
+
   <div class="workspace">
-    <main class="stage" id="stage" aria-label="The Mahi Lab interactive magazine">
-      <div class="reader-mount" id="reader-mount"></div>
+
+    <!-- ==========================================
+         MAIN MAGAZINE STAGE
+         ========================================== -->
+
+    <main
+      class="stage"
+      id="stage"
+      aria-label="The Mahi Lab interactive magazine"
+    >
+
+      <div
+        class="reader-mount"
+        id="reader-mount"
+      ></div>
+
     </main>
-    <aside class="panel" id="panel" aria-label="Reader settings"></aside>
+
+    <!-- ==========================================
+         LEAFTHROUGH SETTINGS PANEL
+         Keep this for main-element.ts compatibility
+         ========================================== -->
+
+    <aside
+      class="panel"
+      id="panel"
+      aria-label="Reader settings"
+    ></aside>
+
   </div>
 
+  <!-- ==========================================
+       OUR PRODUCTS SECTION
+       Below magazine, above footer
+       ========================================== -->
+
+  <section
+    class="mahi-products"
+    id="products"
+    aria-labelledby="products-heading"
+  >
+
+    <div class="mahi-products-inner">
+
+      <!-- SECTION HEADING -->
+
+      <div class="mahi-products-heading">
+
+        <h2 id="products-heading">
+         Discover Our Free Products
+        </h2>
+
+        <p class="mahi-products-intro">
+           made to help you learn, build, and grow.
+        </p>
+
+      </div>
+
+      <!-- PRODUCT GRID -->
+
+      <div class="mahi-product-grid">
+
+        <!-- ======================================
+             PRODUCT 01 - GINGER DRAFTS
+             ====================================== -->
+
+        <a class="mahi-product-card mahi-product-link" href="https://gingerdrafts.mahilab.in/" target="_blank" rel="noopener noreferrer" aria-label="Open Ginger Drafts website">
+
+         <img
+  class="mahi-product-logo"
+  src="./assets/logos/gingerdrafts.png"
+  alt="Ginger Drafts logo"
+/>
+
+          <div class="mahi-product-content">
+
+            <h3>
+              Ginger Drafts
+            </h3>
+
+            <p>
+              A free resume builder with professional
+              ATS-friendly templates to help you
+              create your next resume.
+            </p>
+
+          </div>
+
+        </a>
+
+        <!-- ======================================
+             PRODUCT 02 - ASK BUN
+             ====================================== -->
+
+        <a class="mahi-product-card mahi-product-link" href="https://askbun.mahilab.in/" target="_blank" rel="noopener noreferrer" aria-label="Open Ask Bun website">
+
+       <img
+  class="mahi-product-logo"
+  src="./assets/logos/askbun.png"
+  alt="Ask Bun logo"
+/>
+
+          <div class="mahi-product-content">
+
+            <h3>
+              Ask Bun
+            </h3>
+
+            <p>
+              Practice interview questions and answers,
+              explore programming concepts, and
+              improve your coding skills.
+            </p>
+
+          </div>
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ==========================================
+       THE MAHI LAB FOOTER
+       Outside magazine workspace
+       ========================================== -->
+
   <footer class="mahi-footer">
+
     <div class="mahi-footer-inner">
+
+      <!-- ======================================
+           FOOTER BRAND
+           ====================================== -->
+
       <div class="mahi-footer-brand">
-        <img src="./assets/logos/mahilab.png" alt="The Mahi Lab logo" />
-        <div><h3>The Mahi Lab</h3><p>Technology Made Simple.</p></div>
+
+        <img
+          src="./assets/logos/mahilab.png"
+          alt="The Mahi Lab logo"
+        />
+
+        <div>
+
+          <h3>
+            Mahi Lab
+          </h3>
+
+          <p>
+          The Mahi Lab makes technology simple through free tutorials and practical learning.
+            Explore AI, Cloud, DevOps, Cybersecurity, and innovative tools to learn, build, and grow.
+          </p>
+
+        </div>
+
       </div>
-      <p class="mahi-footer-description">
+
+      <!-- ======================================
+           FOOTER DESCRIPTION
+           ====================================== -->
+
+      <!-- <p class="mahi-footer-description">
+
         Learn. Build. Grow.
-        <span>Telugu Tech Tutorials &amp; Freelancing Services.</span>
-      </p>
+
+        <span>
+          Telugu Tech Tutorials &amp;
+          Freelancing Services.
+        </span>
+
+      </p> -->
+
+      <!-- ======================================
+           FOOTER LINKS
+           ====================================== -->
+
       <div class="mahi-footer-links">
-        <a href="https://www.instagram.com/themahilab.in/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
-        <a href="#home">Back to Top ↑</a>
+
+        <a class="mahi-social mahi-social-instagram"
+          href="https://www.instagram.com/mahilab.in/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg class="mahi-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          <span>Instagram</span>
+        </a>
+
+        <a class="mahi-social mahi-social-threads"
+          href="https://www.threads.com/@mahilab.in?xmt=AQG0MNlPMXMEXn3Tzl4Dlu4dmAsxNQOlaXZErnJTUf2HCso"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg class="mahi-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.7 8.4c-.8-2.6-2.8-4-5.7-4-4.1 0-6.7 3-6.7 7.7 0 5 2.8 8 7.1 8 3.5 0 5.7-1.8 5.7-4.5 0-2.5-2.1-4-5.5-4-2.5 0-4 1.1-4 2.9 0 1.6 1.3 2.5 3 2.5 3.1 0 4.9-2.8 4.4-6.1-.3-2-1.4-3.6-4.1-3.6"/></svg>
+          <span>Threads</span>
+        </a>
+
+        <a class="mahi-social mahi-social-whatsapp"
+          href="https://wa.me/918332865306"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat with The Mahi Lab on WhatsApp Business"
+        >
+          <svg class="mahi-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4.2A8 8 0 1 1 20 11.5Z"/><path d="M9 8.5c.2 2.8 2.6 5.3 5.5 5.8l1.5-1.4-2-1-1 1c-1.3-.5-2.3-1.5-2.8-2.8l1-1-1-2-1.2 1.4Z"/></svg>
+          <span>WhatsApp Business</span>
+        </a>
+
+        <a class="mahi-social mahi-social-backtop" href="#home">
+          <svg class="mahi-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/><path d="M12 8v12"/></svg>
+          <span>Back to Top</span>
+        </a>
+
       </div>
+
     </div>
+
+    <!-- ======================================
+         COPYRIGHT SECTION
+         ====================================== -->
+
     <div class="mahi-footer-bottom">
-      <span>© 2026 The Mahi Lab. All rights reserved.</span>
-      <span>Built by Usman Shaik</span>
+
+      <span>
+        © 2026 Mahi Lab. All rights reserved.
+      </span>
+
+      <span>
+       The Modern StartUp
+      </span>
+
     </div>
+
   </footer>
 
+  <!-- ==========================================
+       LEAFTHROUGH + MAHI LAB NAVIGATION SCRIPT
+       ========================================== -->
+
+  <script
+    type="module"
+    src="./main-element.ts"
+  ></script>
+
+
   <script>
-    (() => {
-      const root = document.documentElement;
-      const toggle = document.getElementById('theme-toggle');
-      const themeMeta = document.querySelector('meta[name="theme-color"]');
-      if (!toggle) return;
-      let switching = false;
-
-      function applyTheme(theme) {
-        root.dataset.theme = theme;
-        try { localStorage.setItem('mahilab-theme', theme); } catch {}
-        const isDark = theme === 'dark';
-        const label = isDark ? 'Switch to light theme' : 'Switch to dark theme';
-        toggle.setAttribute('aria-label', label);
-        toggle.setAttribute('title', label);
-        toggle.setAttribute('aria-pressed', String(isDark));
-        themeMeta?.setAttribute('content', isDark ? '#000000' : '#f9f4ff');
-      }
-
-      toggle.addEventListener('click', () => {
-        if (switching) return;
-        const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!document.startViewTransition || reducedMotion) {
-          applyTheme(next);
-          return;
-        }
-
-        const rect = toggle.getBoundingClientRect();
-        const x = rect.left + rect.width / 2;
-        const y = rect.top + rect.height / 2;
-        const radius = Math.hypot(
-          Math.max(x, innerWidth - x),
-          Math.max(y, innerHeight - y)
-        );
-        switching = true;
-        const transition = document.startViewTransition(() => applyTheme(next));
-        transition.ready.then(() => {
-          root.animate(
-            { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
-            {
-              duration: 800,
-              easing: 'cubic-bezier(.22,1,.36,1)',
-              pseudoElement: '::view-transition-new(root)'
-            }
-          );
-        }).catch(() => {});
-        transition.finished.catch(() => {}).finally(() => { switching = false; });
+    // Animate every navbar click, including repeated clicks on the active item.
+    document.querySelectorAll('header nav a[data-target-page]').forEach((link) => {
+      link.addEventListener('click', () => {
+        link.classList.remove('mahi-nav-pop');
+        void link.offsetWidth; // Restart the animation on repeated clicks.
+        link.classList.add('mahi-nav-pop');
       });
-
-      applyTheme(root.dataset.theme === 'dark' ? 'dark' : 'light');
-    })();
+      link.addEventListener('animationend', (event) => {
+        if (event.animationName === 'mahiNavPop') link.classList.remove('mahi-nav-pop');
+      });
+    });
   </script>
 
-  <script type="module" src="./main-element.ts"></script>
+
+  <script>
+    // Split visible navbar labels into accessible animated characters once.
+    document.querySelectorAll('header nav a[data-target-page]').forEach((link) => {
+      const label = link.querySelector('.mahi-nav-label');
+      if (!label || label.querySelector('.mahi-nav-letter')) return;
+      const original = label.textContent;
+      label.setAttribute('aria-label', original);
+      label.textContent = '';
+      Array.from(original).forEach((character, index) => {
+        const letter = document.createElement('span');
+        letter.className = character === ' ' ? 'mahi-nav-letter mahi-nav-space' : 'mahi-nav-letter';
+        letter.style.setProperty('--letter-index', index);
+        letter.textContent = character === ' ' ? '\u00a0' : character;
+        letter.setAttribute('aria-hidden', 'true');
+        label.appendChild(letter);
+      });
+      let clearTimer;
+      link.addEventListener('click', () => {
+        link.classList.remove('mahi-nav-bubble');
+        void link.offsetWidth;
+        link.classList.add('mahi-nav-bubble');
+        clearTimeout(clearTimer);
+        clearTimer = setTimeout(() => link.classList.remove('mahi-nav-bubble'), 1050 + original.length * 65);
+      });
+    });
+  </script>
+
 </body>
 </html>
