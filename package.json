@@ -1,8 +1,11 @@
+
 {
   "name": "leafthrough",
   "version": "0.1.8",
-  "description": "A 3D magazine you can flip through, with paper that bends, rolls and casts shadows. Built on three.js, with React, Vue, Svelte and Web Component bindings.",
+  "private": true,
+  "description": "The Mahi Lab - Interactive 3D Tech Magazine powered by LeafThrough and Three.js.",
   "keywords": [
+    "mahi-lab",
     "magazine",
     "flipbook",
     "page-flip",
@@ -15,14 +18,6 @@
     "web-component"
   ],
   "license": "MIT",
-  "homepage": "https://dmtrbrl.github.io/leafthrough/",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dmtrbrl/leafthrough.git"
-  },
-  "bugs": {
-    "url": "https://github.com/dmtrbrl/leafthrough/issues"
-  },
   "type": "module",
   "files": [
     "dist"
@@ -58,11 +53,12 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "tsup && tsc -p tsconfig.build.json",
-    "prepublishOnly": "npm run build",
+    "build": "vite build",
+    "build:demo": "vite build",
+    "build:library": "tsup && tsc -p tsconfig.build.json",
+    "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "build:demo": "vite build"
+    "test": "vitest run"
   },
   "peerDependencies": {
     "react": ">=18",
