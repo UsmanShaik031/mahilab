@@ -397,18 +397,20 @@
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         gap: 12px !important;
-        width: min(100%, 340px) !important;
+        width: min(100%, 400px) !important;
         margin: 0 auto;
       }
       body .mahi-footer-links a {
-        display: flex !important;
+        /* display: flex !important; */
         width: 100%;
         min-width: 0;
-        min-height: 43px;
+        min-height: 49px;
         padding: 10px 8px !important;
         font-size: 11px !important;
         white-space: nowrap;
         text-align: center;
+        background-color: transparent !important;
+        border:none;
       }
       body .mahi-footer-bottom {
         margin-top: 25px !important;
@@ -495,7 +497,7 @@
       text-decoration: none;
       transition: transform .2s ease, box-shadow .2s ease;
     }
-    .mahi-social-icon { width: 17px; height: 17px; flex: 0 0 17px; display: block; }
+    .mahi-social-icon { width: 23px; height: 23px; flex: 0 0 23px; display: block; }
     .mahi-social-instagram .mahi-social-icon { color: #e44080; }
     .mahi-social-threads .mahi-social-icon { color: #161616; }
     .mahi-social-whatsapp .mahi-social-icon { color: #18b96b; }
@@ -799,7 +801,191 @@
       header nav a[data-target-page].mahi-nav-bubble .mahi-nav-icon,
       header nav a[data-target-page].mahi-nav-bubble::before { animation: none !important; }
     }
+/* ==========================================
+   FOOTER SOCIAL ICONS — CLEAN HORIZONTAL ROW
+   ========================================== */
 
+html body .mahi-footer-links {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-wrap: nowrap !important;
+
+  gap: 22px !important;
+
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove all button backgrounds and borders */
+html body .mahi-footer-links a.mahi-social {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+
+  padding: 4px !important;
+  margin: 0 !important;
+  gap: 6px !important;
+
+  background: transparent !important;
+  background-color: transparent !important;
+
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
+  text-decoration: none !important;
+
+  transition: transform 0.25s ease !important;
+}
+
+/* Bigger social media icons */
+html body .mahi-footer-links .mahi-social-icon {
+  display: block !important;
+
+  width: 34px !important;
+  height: 34px !important;
+  flex: 0 0 34px !important;
+
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Instagram */
+html body .mahi-social-instagram .mahi-social-icon {
+  color: #e44080 !important;
+}
+
+/* Threads */
+html body .mahi-social-threads .mahi-social-icon {
+  color: #161616 !important;
+}
+
+/* WhatsApp */
+html body .mahi-social-whatsapp .mahi-social-icon {
+  color: #25D366 !important;
+}
+
+/* Back to Top */
+html body .mahi-social-backtop .mahi-social-icon {
+  color: #8f4fff !important;
+  width: 25px !important;
+  height: 25px !important;
+  flex-basis: 25px !important;
+}
+
+html body .mahi-social-backtop span {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+}
+
+/* Remove decorative backgrounds */
+html body .mahi-footer-links a.mahi-social::before,
+html body .mahi-footer-links a.mahi-social::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Smooth hover animation */
+@media (hover: hover) {
+  html body .mahi-footer-links a.mahi-social:hover {
+    transform: translateY(-4px) scale(1.12) !important;
+
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Click animation */
+html body .mahi-footer-links a.mahi-social:active {
+  transform: scale(0.92) !important;
+}
+
+/* Keyboard accessibility */
+html body .mahi-footer-links a.mahi-social:focus-visible {
+  outline: 2px solid #8f4fff !important;
+  outline-offset: 5px !important;
+}
+
+/* ==========================================
+   MOBILE RESPONSIVE
+   ========================================== */
+
+@media (max-width: 600px) {
+
+  html body .mahi-footer-links {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+
+    justify-content: center !important;
+    align-items: center !important;
+
+    gap: 20px !important;
+    width: 100% !important;
+
+    margin: 8px auto 0 !important;
+  }
+
+  html body .mahi-footer-links a.mahi-social {
+    width: auto !important;
+    min-height: 0 !important;
+    padding: 3px !important;
+  }
+
+  html body .mahi-footer-links .mahi-social-icon {
+    width: 32px !important;
+    height: 32px !important;
+    flex-basis: 32px !important;
+  }
+
+  /* Back to Top icon only on mobile */
+  html body .mahi-social-backtop span {
+    display: none !important;
+  }
+
+  html body .mahi-social-backtop .mahi-social-icon {
+    width: 28px !important;
+    height: 28px !important;
+    flex-basis: 28px !important;
+  }
+}
+
+/* Smaller mobile screens */
+@media (max-width: 360px) {
+
+  html body .mahi-footer-links {
+    gap: 16px !important;
+  }
+
+  html body .mahi-footer-links .mahi-social-icon {
+    width: 30px !important;
+    height: 30px !important;
+    flex-basis: 30px !important;
+  }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  html body .mahi-footer-links a.mahi-social {
+    transition: none !important;
+    transform: none !important;
+  }
+}
   </style>
 
 </head>
@@ -1101,22 +1287,22 @@
 
       <div class="mahi-footer-links">
 
-        <a class="mahi-social mahi-social-instagram"
-          href="https://www.instagram.com/mahilab.in/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+       <a class="mahi-social mahi-social-instagram"
+   href="https://www.instagram.com/mahilab.in/"
+   target="_blank"
+   rel="noopener noreferrer"
+   aria-label="Instagram">
           <svg class="mahi-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-          <span>Instagram</span>
+          <!-- <span>Instagram</span> -->
         </a>
 
-        <a class="mahi-social mahi-social-threads"
-          href="https://www.threads.com/@mahilab.in?xmt=AQG0MNlPMXMEXn3Tzl4Dlu4dmAsxNQOlaXZErnJTUf2HCso"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      <a class="mahi-social mahi-social-threads"
+   href="https://www.threads.com/@mahilab.in"
+   target="_blank"
+   rel="noopener noreferrer"
+   aria-label="Threads">
           <svg class="mahi-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.7 8.4c-.8-2.6-2.8-4-5.7-4-4.1 0-6.7 3-6.7 7.7 0 5 2.8 8 7.1 8 3.5 0 5.7-1.8 5.7-4.5 0-2.5-2.1-4-5.5-4-2.5 0-4 1.1-4 2.9 0 1.6 1.3 2.5 3 2.5 3.1 0 4.9-2.8 4.4-6.1-.3-2-1.4-3.6-4.1-3.6"/></svg>
-          <span>Threads</span>
+          <!-- <span>Threads</span> -->
         </a>
 
         <a class="mahi-social mahi-social-whatsapp"
@@ -1126,13 +1312,15 @@
           aria-label="Chat with The Mahi Lab on WhatsApp Business"
         >
           <svg class="mahi-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4.2A8 8 0 1 1 20 11.5Z"/><path d="M9 8.5c.2 2.8 2.6 5.3 5.5 5.8l1.5-1.4-2-1-1 1c-1.3-.5-2.3-1.5-2.8-2.8l1-1-1-2-1.2 1.4Z"/></svg>
-          <span>WhatsApp Business</span>
+          <!-- <span>WhatsApp Business</span> -->
         </a>
 
-        <a class="mahi-social mahi-social-backtop" href="#home">
+       <!-- <a class="mahi-social mahi-social-backtop"
+   href="#home"
+   aria-label="Back to Top">
           <svg class="mahi-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/><path d="M12 8v12"/></svg>
           <span>Back to Top</span>
-        </a>
+        </a> -->
 
       </div>
 
