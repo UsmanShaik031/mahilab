@@ -109,17 +109,25 @@
     /* ==========================================
        PRODUCTS GRID
        ========================================== */
+.mahi-product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+}
 
-    .mahi-product-grid {
-      display: grid;
+@media (max-width: 900px) {
+  .mahi-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-      gap: 22px;
-
-      width: 100%;
-    }
+@media (max-width: 600px) {
+  .mahi-product-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
 
     /* ==========================================
        PRODUCT CARD
@@ -288,7 +296,22 @@
         height: 44px;
         border-radius: 12px;
       }
+.mahi-product-logo.melomagic-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
 
+/* Mobile */
+@media (max-width: 500px) {
+  .mahi-product-logo.melomagic-logo {
+    width: 100px;
+    height: 100px;
+    margin-left: -20px;
+    margin-bottom: -20px;
+  }
+}
       .mahi-product-logo-fallback {
         font-size: 26px;
       }
@@ -618,7 +641,7 @@
         padding-top: 0 !important;
       }
       html body .mahi-products {
-        margin-top: 0 !important;
+        margin-top: 5 !important;
         padding-top: 24px !important;
       }
     }
@@ -1167,65 +1190,105 @@ html body .mahi-footer-links a.mahi-social:focus-visible {
 
       <!-- PRODUCT GRID -->
 
-      <div class="mahi-product-grid">
+     <div class="mahi-product-grid">
 
-        <!-- ======================================
-             PRODUCT 01 - GINGER DRAFTS
-             ====================================== -->
+  <!-- ======================================
+       PRODUCT 01 - GINGER DRAFTS
+       ====================================== -->
 
-        <a class="mahi-product-card mahi-product-link" href="https://gingerdrafts.mahilab.in/" target="_blank" rel="noopener noreferrer" aria-label="Open Ginger Drafts website">
+  <a
+    class="mahi-product-card mahi-product-link"
+    href="https://gingerdrafts.mahilab.in/"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Open Ginger Drafts website"
+  >
 
-         <img
-  class="mahi-product-logo"
-  src="./assets/logos/gingerdrafts.png"
-  alt="Ginger Drafts logo"
+    <img
+      class="mahi-product-logo"
+      src="./assets/logos/gingerdrafts.png"
+      alt="Ginger Drafts logo"
+    />
+
+    <div class="mahi-product-content">
+
+      <h3>Ginger Drafts</h3>
+
+      <p>
+        A free resume builder with professional
+        ATS-friendly templates to help you
+        create your next resume.
+      </p>
+
+    </div>
+
+  </a>
+
+  <!-- ======================================
+       PRODUCT 02 - ASK BUN
+       ====================================== -->
+
+  <a
+    class="mahi-product-card mahi-product-link"
+    href="https://askbun.mahilab.in/"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Open Ask Bun website"
+  >
+
+    <img
+      class="mahi-product-logo"
+      src="./assets/logos/askbun.png"
+      alt="Ask Bun logo"
+    />
+
+    <div class="mahi-product-content">
+
+      <h3>Ask Bun</h3>
+
+      <p>
+        Explore programming concepts, learn
+        with simple lessons, and improve your
+        coding skills for free.
+      </p>
+
+    </div>
+
+  </a>
+
+  <!-- ======================================
+       PRODUCT 03 - MELO MAGIC
+       ====================================== -->
+
+  <a
+    class="mahi-product-card mahi-product-link"
+    href="https://melomagic.mahilab.in/"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Open Melo Magic website"
+  >
+
+<img
+  class="mahi-product-logo melomagic-logo"
+  src="./assets/logos/melomagic.png"
+  alt="Melo Magic logo"
 />
 
-          <div class="mahi-product-content">
+    <div class="mahi-product-content">
 
-            <h3>
-              Ginger Drafts
-            </h3>
+      <h3>Melo Magic</h3>
 
-            <p>
-              A free resume builder with professional
-              ATS-friendly templates to help you
-              create your next resume.
-            </p>
+      <p>
+        A fun interactive musical game where
+        you can play the xylophone, explore
+        sweet rhythms, and create your own melodies.
+      </p>
 
-          </div>
+    </div>
 
-        </a>
+  </a>
 
-        <!-- ======================================
-             PRODUCT 02 - ASK BUN
-             ====================================== -->
-
-        <a class="mahi-product-card mahi-product-link" href="https://askbun.mahilab.in/" target="_blank" rel="noopener noreferrer" aria-label="Open Ask Bun website">
-
-       <img
-  class="mahi-product-logo"
-  src="./assets/logos/askbun.png"
-  alt="Ask Bun logo"
-/>
-
-          <div class="mahi-product-content">
-
-            <h3>
-              Ask Bun
-            </h3>
-
-            <p>
-              Practice interview questions and answers,
-              explore programming concepts, and
-              improve your coding skills.
-            </p>
-
-          </div>
-
-        </a>
-
-      </div>
+</div>
 
     </div>
 
